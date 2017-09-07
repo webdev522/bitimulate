@@ -18,7 +18,7 @@ const messageHandler = {
     
     try {
       const updated = await ExchangeRate.updateTicker(name, rest);
-      console.log(updated);
+      // console.log('[updated]', name, new Date());
     } catch (e) {
       console.error(e);
     }
@@ -50,11 +50,35 @@ async function registerInitialExchangeRate() {
       const data = Object.assign({name: key}, ticker);
       const exchangeRate = new ExchangeRate(data);
       return exchangeRate.save();
-      // return data;
     }
   );
   await promises;
   console.log('succeed!');
 }
 
-registerInitialExchangeRate();
+async function updateEntireRate() {
+  const tickers = await poloniex.getTickers();
+  const keys = Object.keys(tickers);
+  const promises = keys.map(
+    key => {
+      return ExchangeRate.updateTicker(key, tickers[key]);
+    }
+  );
+
+  try {
+    await Promise.all(promises);
+  } catch (e) {
+    console.error('Oops, failt to update entire rate!');
+    return;
+  }
+
+  console.log('Updated entire rate.');
+}
+
+socket.handleRefresh = () => {
+  updateEntireRate();
+};
+
+// registerInitialExchangeRate();
+
+// updateEntireRate();
