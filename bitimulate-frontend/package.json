@@ -36,6 +36,7 @@
     "react": "next",
     "react-dev-utils": "^4.0.1",
     "react-dom": "next",
+    "react-router-dom": "^4.2.2",
     "sass-material-colors": "^0.0.5",
     "style-loader": "0.18.2",
     "sw-precache-webpack-plugin": "0.11.4",
