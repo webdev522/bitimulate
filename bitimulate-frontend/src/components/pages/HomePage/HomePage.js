@@ -1,14 +1,13 @@
 import React from 'react';
-import { Header, PageTemplate } from 'components';
+import { Header, PageTemplate, PolyBackground } from 'components';
 
 const HomePage = () => {
   return (
-    <PageTemplate
-      header={<Header/>}
-      responsive>
-      Home
+    <PageTemplate 
+      header={<Header/>}>
+      <PolyBackground></PolyBackground>
     </PageTemplate>
   );
-}
+};
 
 export default HomePage;
