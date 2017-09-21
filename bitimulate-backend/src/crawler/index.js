@@ -36,25 +36,25 @@ socket.handleMessage = (message) => {
   }
 };
 
-async function registerInitialExchangeRate() {
-  const tickers = await poloniex.getTickers();
+// async function registerInitialExchangeRate() {
+//   const tickers = await poloniex.getTickers();
 
-  // removes all the data from the collection (only for temporary use)
-  await ExchangeRate.drop();
-  console.log('dropped exchangerate collection');
+//   // removes all the data from the collection (only for temporary use)
+//   await ExchangeRate.drop();
+//   console.log('dropped exchangerate collection');
 
-  const keys = Object.keys(tickers);
-  const promises = keys.map(
-    key => {
-      const ticker = tickers[key];
-      const data = Object.assign({name: key}, ticker);
-      const exchangeRate = new ExchangeRate(data);
-      return exchangeRate.save();
-    }
-  );
-  await promises;
-  console.log('succeed!');
-}
+//   const keys = Object.keys(tickers);
+//   const promises = keys.map(
+//     key => {
+//       const ticker = tickers[key];
+//       const data = Object.assign({name: key}, ticker);
+//       const exchangeRate = new ExchangeRate(data);
+//       return exchangeRate.save();
+//     }
+//   );
+//   await promises;
+//   console.log('succeed!');
+// }
 
 async function updateEntireRate() {
   const tickers = await poloniex.getTickers();
