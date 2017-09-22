@@ -1,0 +1,34 @@
+@import 'utils';
+
+.button {
+  display: inline-block;
+  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+  user-select: none;
+
+  //default theme
+  background: material-color('grey', '300');
+  &:hover {
+    background: material-color('grey', '200');
+  }
+  &:active {
+    background: material-color('grey', '300');
+  }
+
+  &.invert {
+    border: 2px solid white;
+    color: white;
+    background: transparent;
+    transition: box-shadow .15s ease-in;
+    &:hover {
+      background: white;
+      color: material-color('grey', '800');
+      @include material-shadow(2);
+    }
+    &:active {
+      @include material-shadow(3);
+    }
+  }
+}
