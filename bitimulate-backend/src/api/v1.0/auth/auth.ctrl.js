@@ -1,10 +1,8 @@
 const Joi = require('joi');
 const User = require('db/models/User');
-const token = require('lib/token');
 
 exports.localRegister = async (ctx) => {
   const { body } = ctx.request;
-  
   const schema = Joi.object({
     displayName: Joi.string().regex(/^[a-zA-Z0-9]{3,10}/).required(),
     email: Joi.string().email().required(),
@@ -12,7 +10,6 @@ exports.localRegister = async (ctx) => {
   });
 
   const result = Joi.validate(body, schema);
-
   // schema error
   if (result.error) {
     ctx.status = 400;
@@ -38,7 +35,11 @@ exports.localRegister = async (ctx) => {
     const user = await User.localRegister({
       displayName, email, password  
     });
-    ctx.body = user;
+    ctx.body = {
+      displayName,
+      _id: user._id,
+      metaInfo: user.metaInfo
+    };
     const accessToken = await await user.generateToken();
 
     // configure accesstoken to httpOnly cookie
@@ -61,7 +62,7 @@ exports.localLogin = async (ctx) => {
 
   const result = Joi.validate(body, schema);
 
-  if (!result.error) {
+  if (result.error) {
     ctx.status = 400;
     return;
   }
@@ -91,7 +92,25 @@ exports.localLogin = async (ctx) => {
       maxAge: 1000 * 60 * 60 * 24 * 7
     });
 
+    const { displayName, _id, metaInfo } = user;
+    ctx.body = {
+      displayName,
+      _id,
+      metaInfo
+    };
   } catch (e) {
     ctx.throw(e);
   }
+};
+
+exports.check = (ctx) => {
+  const { user } = ctx.request;
+  if (!user) {
+    ctx.status = 403;
+    return;
+  }
+
+  ctx.body = {
+    user
+  };
 };
