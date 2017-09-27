@@ -20,13 +20,3 @@ export default connect(
 
   })
 )(LoginModalContainer);
-
-// import React from 'react';
-
-// const LoginModalContainer = () => {
-//   return (
-//     <div></div>
-//   );
-// }
-
-// export default LoginModalContainer;
