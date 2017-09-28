@@ -33,7 +33,6 @@
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
     "promise": "8.0.1",
-    "prop-types": "^15.6.0",
     "react": "next",
     "react-dev-utils": "^4.0.1",
     "react-dom": "next",

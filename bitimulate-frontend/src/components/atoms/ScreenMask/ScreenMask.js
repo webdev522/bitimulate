@@ -18,6 +18,6 @@ const ScreenMask = ({visible}) => {
       { visible && <div className={cx('screen-mask')}/> }
     </CSSTransitionGroup>
   );
-}
+};
 
 export default ScreenMask;
