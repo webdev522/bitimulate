@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import penderMiddleware from 'redux-pender';
-
 import modules from './modules';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -18,6 +17,10 @@ const configureStore = (initialState) => {
   ];
 
   const store = createStore(modules, initialState, compose(...enhancers));
+
+  if (module.hot) {
+    module.hot.accept('./modules', () => store.replaceReducer(modules));
+  }
 
   return store;
 }
