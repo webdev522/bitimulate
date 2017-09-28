@@ -4,16 +4,44 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-const Button = ({children, className, invert, ...rest}) => {
+const Button = ({
+  children, 
+  flex, 
+  className, 
+  roundCorner, 
+  invert, 
+  flat, 
+  color,
+  padding="0.5rem",
+  xPadding,
+  style,
+  disabled,
+  ...rest
+}) => {
+  const dynamicStyle = {
+    ...(xPadding ? {
+      paddingLeft: xPadding,
+      paddingRight: xPadding
+    } : {})
+  }
   return (
     <div className={
       cx('button', {
-        invert
-      }, className)  
-    } {...rest}>
+        invert,
+        flex,
+        flat,
+        disabled
+      }, color, className)
+    }
+    style={{
+      padding,
+      ...style,
+      ...dynamicStyle
+    }}
+     {...rest}>
       {children}
     </div>
   );
-}
+};
 
 export default Button;

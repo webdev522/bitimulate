@@ -20,7 +20,7 @@ const render = (Component) => ReactDOM.render(
 
 render(Root);
 
-if(module.hot) {
+if (module.hot) {
   module.hot.accept('./Root', () => render(Root))
 }
 
