@@ -4,11 +4,12 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-const Block = ({color, background, center, children, shadow}) => {
+const Block = ({color, background, children, center, shadow}) => {
   const style = {
     color,
     background
   };
+
   return (
     <div style={style} className={cx('block', {
       center,
@@ -17,6 +18,6 @@ const Block = ({color, background, center, children, shadow}) => {
       {children}
     </div>
   );
-}
+};
 
 export default Block;

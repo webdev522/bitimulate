@@ -3,11 +3,10 @@
 .block {
   background: white;
   padding: 1rem;
-  // color: black;
   &.center {
     text-align: center;
   }
   &.shadow {
-    @include material-shadow(5);
+    @include material-shadow(2);
   }
 }

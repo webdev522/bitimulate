@@ -1,3 +1,3 @@
-# bittimulate-frontend
+# bitimulate-frontend
 
-To be implemented...
+To be implemented..

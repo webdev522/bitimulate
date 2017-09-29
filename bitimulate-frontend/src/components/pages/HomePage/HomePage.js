@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageTemplate, PolyBackground, Block } from 'components';
-import { HeaderContainer } from 'containers';
+import {HeaderContainer} from 'containers';
 
 const HomePage = () => {
   return (
@@ -8,8 +8,12 @@ const HomePage = () => {
       header={<HeaderContainer/>}>
       <PolyBackground>
         <Block center shadow>
-          <h1>Please trade your bitcoin here - Cryptocurrency Virtual Trade</h1>
-          <h2>All trade is being processed by real-time bitcoin data</h2>
+          <h1>
+            Please Trade Here - Virtual Crypto Currency Trading Center
+          </h1>
+          <h2>
+            You Can Trade Based On POLONIEX Live Data
+          </h2>
         </Block>
       </PolyBackground>
     </PageTemplate>

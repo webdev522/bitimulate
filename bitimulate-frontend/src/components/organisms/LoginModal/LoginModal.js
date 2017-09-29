@@ -5,31 +5,65 @@ import { Modal, Input, Button, TextButton, SocialLoginButton } from 'components'
 
 const cx = classNames.bind(styles);
 
-const LoginModal = ({visible}) => {
+const LoginModal = ({
+  visible, 
+  mode, 
+  forms,
+  onChangeInput,
+  onChangeMode
+}) => {
+  const modeText = mode === 'login' ? 'Login' : 'Signup';
+  const invertedText = mode === 'login' ? 'Signup' : 'Login';
+  
+  const {
+    email,
+    password,
+    displayName
+  } = forms.get(mode).toJS();
+
   return (
     <Modal visible={visible}>
       <div className={cx('login-modal')}>
-        <div className={cx('bar')}/>
+        <div className={cx('bar')}></div>
         <div className={cx('content')}>
-          <h3>Login By Email</h3>
+          <h3>{modeText} with Email</h3>
           <div className={cx('form')}>
-            <Input fullWidth big placeholder="email"/>
-            <Input fullWidth big placeholder="password" type="password"/>
+            <Input 
+              value={email}
+              onChange={onChangeInput}
+              name="email" 
+              fullWidth big 
+              placeholder="Email"/>
+            <Input 
+              value={password}
+              onChange={onChangeInput}
+              name="password" 
+              fullWidth big 
+              placeholder="Password" 
+              type="password"/>
+            { mode === 'register' && (
+              <Input 
+                value={displayName}
+                onChange={onChangeInput}
+                name="displayName" 
+                fullWidth big 
+                placeholder="Nickname"/> 
+            )}
           </div>
-          <Button flat color="teal" flex padding="0.6rem" className={cx('login')}>Login</Button>
+          <Button flat color="teal" flex padding="0.6rem" className={cx('login')}>{modeText}</Button>
           <div className={cx('login-foot')}>
-            <TextButton>Forget Password</TextButton>
-            <TextButton right>Sign up</TextButton>
+            <TextButton>Forgot password</TextButton>
+            <TextButton right onClick={onChangeMode}>{invertedText}</TextButton>
           </div>
           <div className={cx('separator')}>
             <div className={cx('or')}>OR</div>
           </div>
-          <h3>Login By Social Account</h3>
+          <h3>{modeText} with Social Account</h3>
           <SocialLoginButton/>
         </div>
       </div>
     </Modal>
   );
-}
+};
 
 export default LoginModal;

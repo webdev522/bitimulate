@@ -10,6 +10,6 @@ const NavItem = ({children}) => {
       {children}
     </div>
   );
-}
+};
 
 export default NavItem;

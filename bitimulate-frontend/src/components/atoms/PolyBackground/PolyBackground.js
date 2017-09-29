@@ -37,6 +37,7 @@ class PolyBackground extends Component {
   render() {
     const { loaded } = this.state;
     const { children } = this.props;
+
     return (
       <div className={cx('poly-background')}>
         <div className={cx('image', { blur: !loaded })}>

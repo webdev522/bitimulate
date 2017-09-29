@@ -1,9 +1,10 @@
 import React from 'react';
-import styles from './Header.scss'
+import styles from './Header.scss';
 import classNames from 'classnames/bind';
-import { Logo, HeaderNav, Button } from 'components'
+import { Logo, HeaderNav, Button } from 'components';
 
 const cx = classNames.bind(styles);
+
 const Header = ({
   onLoginButtonClick
 }) => {
@@ -15,14 +16,14 @@ const Header = ({
         </div>
         <div className={cx('right-side')}>
           <HeaderNav/>
-          <Button
-            invert
+          <Button 
+            invert 
             className={cx('login-button')}
             onClick={onLoginButtonClick}>Login</Button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Header;

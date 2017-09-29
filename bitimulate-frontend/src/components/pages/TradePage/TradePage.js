@@ -3,9 +3,9 @@ import React from 'react';
 const TradePage = () => {
   return (
     <div>
-      Trade!
+      Trade
     </div>
   );
-}
+};
 
 export default TradePage;

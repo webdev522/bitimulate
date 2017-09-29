@@ -1,1 +1,1 @@
-export { default } from './TradePage'
+export { default } from './TradePage';

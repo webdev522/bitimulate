@@ -6,15 +6,15 @@ const cx = classNames.bind(styles);
 
 const FlexBox = ({row, column, className, children, ...rest}) => {
   return (
-    <div
+    <div 
       className={cx('flex-box', {
         row,
         column
-      }, className)}
+      }, className)} 
       {...rest}>
-      {children}
+      { children }
     </div>
   );
-}
+};
 
 export default FlexBox;

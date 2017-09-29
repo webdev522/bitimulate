@@ -13,30 +13,20 @@ const Button = ({
   flat, 
   color,
   padding="0.5rem",
-  xPadding,
   style,
-  disabled,
   ...rest
 }) => {
-  const dynamicStyle = {
-    ...(xPadding ? {
-      paddingLeft: xPadding,
-      paddingRight: xPadding
-    } : {})
-  }
   return (
     <div className={
       cx('button', {
         invert,
         flex,
         flat,
-        disabled
       }, color, className)
     }
     style={{
       padding,
-      ...style,
-      ...dynamicStyle
+      ...style
     }}
      {...rest}>
       {children}

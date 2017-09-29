@@ -9,8 +9,8 @@ const Input = ({big, fullWidth, className, ...rest}) => {
     <input className={cx('input', {
       big,
       'full-width': fullWidth
-      }, className)} {...rest}/>
+    }, className)} {...rest}/>
   );
-}
+};
 
 export default Input;

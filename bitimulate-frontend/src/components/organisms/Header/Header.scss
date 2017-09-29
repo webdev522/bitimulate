@@ -2,7 +2,7 @@
 
 .header {
   height: 3.5rem;
-  // z-index: z-index-for('header');
+
   // background: material-color('teal', '600');
   .responsive {
     padding-left: 1rem;
@@ -11,7 +11,7 @@
     display: flex;
     height: 100%;
     align-items: center;
-    
+
     .right-side {
       display: flex;
       margin-left: auto;

@@ -8,8 +8,8 @@ const cx = classNames.bind(styles);
 const ScreenMask = ({visible}) => {
   return (
     <CSSTransitionGroup
-      transitionEnterTimeout={300}
-      transitionLeaveTimeout={300}
+      transitionEnterTimeout={150}
+      transitionLeaveTimeout={150}
       transitionName={{
         enter: cx('fade-enter'),
         leave: cx('fade-leave')
