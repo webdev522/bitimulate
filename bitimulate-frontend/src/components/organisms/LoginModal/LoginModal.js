@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './LoginModal.scss';
 import classNames from 'classnames/bind';
-import { Modal, Input, Button, TextButton, SocialLoginButton } from 'components';
+import { Modal, Input, Button, TextButton, SocialLoginButton, InputError } from 'components';
 
 const cx = classNames.bind(styles);
 
@@ -9,17 +9,27 @@ const LoginModal = ({
   visible, 
   mode, 
   forms,
+  error,
   onChangeInput,
-  onChangeMode
+  onChangeMode,
+  onLogin,
+  onRegister
 }) => {
-  const modeText = mode === 'login' ? 'Login' : 'Signup';
-  const invertedText = mode === 'login' ? 'Signup' : 'Login';
+  const isLogin = mode === 'login';
+  const modeText = isLogin ? 'Login' : 'Signup';
+  const invertedText = isLogin ? 'Signup' : 'Login';
   
   const {
     email,
-    password,
-    displayName
-  } = forms.get(mode).toJS();
+    password
+  } = forms.toJS();
+
+  const {
+    email: emailError,
+    password: passwordError
+  } = error ? error.toJS() : { };
+  
+  const onButtonClick = isLogin ? onLogin : onRegister;
 
   return (
     <Modal visible={visible}>
@@ -34,6 +44,7 @@ const LoginModal = ({
               name="email" 
               fullWidth big 
               placeholder="Email"/>
+            <InputError error={emailError}/>
             <Input 
               value={password}
               onChange={onChangeInput}
@@ -41,16 +52,13 @@ const LoginModal = ({
               fullWidth big 
               placeholder="Password" 
               type="password"/>
-            { mode === 'register' && (
-              <Input 
-                value={displayName}
-                onChange={onChangeInput}
-                name="displayName" 
-                fullWidth big 
-                placeholder="Nickname"/> 
-            )}
+              <InputError error={passwordError}/>
           </div>
-          <Button flat color="teal" flex padding="0.6rem" className={cx('login')}>{modeText}</Button>
+          <Button 
+            flat color="teal" 
+            flex padding="0.6rem" 
+            className={cx('login')} 
+            onClick={onButtonClick}>{modeText}</Button>
           <div className={cx('login-foot')}>
             <TextButton>Forgot password</TextButton>
             <TextButton right onClick={onChangeMode}>{invertedText}</TextButton>
