@@ -32,7 +32,10 @@ class LoginModalContainer extends Component {
   handleLogin = () => {
     console.log('login');
   }
-  handleRegister = () => {
+  handleRegister = async () => {
+    const  { AuthActions } = this.props;
+    // reset error
+    AuthActions.setError(null);
     // validate email and password
     const constraints = {
       email: {
@@ -51,11 +54,20 @@ class LoginModalContainer extends Component {
     const form = this.props.form.toJS();
     const error = validate(form, constraints);
 
-    const { AuthActions } = this.props;
+    // const { AuthActions } = this.props;
     if (error) {
-      AuthActions.setError(error);
+      return AuthActions.setError(error);
+    }
+
+    try {
+      await AuthActions.checkEmail(form.email);
+    } catch (e) {
+      if (this.props.error) {
+        return;
+      }
     }
   }
+
   render() {
     const { visible, mode, form, error } = this.props;
     const { handleChangeMode,
