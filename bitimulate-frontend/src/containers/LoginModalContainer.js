@@ -41,7 +41,7 @@ class LoginModalContainer extends Component {
   }
 
   handleLogin = () => {
-    console.log('뭐, 로그인해 ')
+    console.log('login')
   }
   handleRegister = async () => {
     const { AuthActions, RegisterActions } = this.props;
@@ -52,13 +52,13 @@ class LoginModalContainer extends Component {
     const constraints = {
       email: {
         email: {
-          message: () => '^잘못된 형식의 이메일입니다.'
+          message: () => '^It is a not valid email'
         }
       },
       password: {
         length: { 
           minimum: 6,
-          tooShort: '^비밀번호는 %{count}자 이상 입력하세요.'
+          tooShort: '^Password needs to have %{count} words or more'
         }
       }
     }
