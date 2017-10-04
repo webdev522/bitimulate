@@ -10,6 +10,8 @@ import * as registerActions from 'store/modules/register';
 
 import validate from 'validate.js';
 
+import { withRouter } from 'react-router';
+
 
 class LoginModalContainer extends Component {
 
@@ -81,7 +83,8 @@ class LoginModalContainer extends Component {
     // close the modal, open the register screen
     this.handleClose();
 
-    RegisterActions.show();
+    const { history } = this.props;
+    history.push('/register');
     
   }
   render() {
@@ -119,4 +122,4 @@ export default connect(
         AuthActions: bindActionCreators(authActions, dispatch),
         RegisterActions: bindActionCreators(registerActions, dispatch)
     })
-)(onClickOutside(LoginModalContainer));
+)(withRouter(onClickOutside(LoginModalContainer)));
