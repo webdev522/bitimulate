@@ -6,20 +6,30 @@ import { LoginModal } from 'components';
 import onClickOutside from 'react-onclickoutside'
 import * as baseActions from 'store/modules/base';
 import * as authActions from 'store/modules/auth';
+import * as registerActions from 'store/modules/register';
+
 import validate from 'validate.js';
 
+
 class LoginModalContainer extends Component {
-  handleClickOutside = evt => {
+
+  handleClose = () => {
     const { visible, BaseActions, AuthActions } = this.props;
     if(!visible) return;
     BaseActions.setScreenMaskVisibility(false);
     AuthActions.toggleLoginModal();
   }
+
+  handleClickOutside = evt => {
+    this.handleClose()
+  }
+
   handleChangeMode = () => {
     const { mode, AuthActions } = this.props;
     const inverted = mode === 'login' ? 'register' : 'login';
     AuthActions.setModalMode(inverted);
   }
+
   handleChangeInput = (e) => {
     const { AuthActions } = this.props;
     const { name, value } = e.target;
@@ -29,24 +39,26 @@ class LoginModalContainer extends Component {
       value
     });
   }
+
   handleLogin = () => {
-    console.log('login');
+    console.log('뭐, 로그인해 ')
   }
   handleRegister = async () => {
-    const  { AuthActions } = this.props;
+    const { AuthActions, RegisterActions } = this.props;
     // reset error
     AuthActions.setError(null);
+
     // validate email and password
     const constraints = {
       email: {
         email: {
-          message: '^It is a not valid email'
+          message: () => '^잘못된 형식의 이메일입니다.'
         }
       },
       password: {
-        length: {
+        length: { 
           minimum: 6,
-          tooShort: '^Password needs to have %{count} words or more'
+          tooShort: '^비밀번호는 %{count}자 이상 입력하세요.'
         }
       }
     }
@@ -54,33 +66,38 @@ class LoginModalContainer extends Component {
     const form = this.props.form.toJS();
     const error = validate(form, constraints);
 
-    // const { AuthActions } = this.props;
-    if (error) {
+    if(error) {
       return AuthActions.setError(error);
     }
 
     try {
       await AuthActions.checkEmail(form.email);
     } catch (e) {
-      if (this.props.error) {
+      if(this.props.error) {
         return;
       }
     }
-  }
 
+    // close the modal, open the register screen
+    this.handleClose();
+
+    RegisterActions.show();
+    
+  }
   render() {
     const { visible, mode, form, error } = this.props;
-    const { handleChangeMode,
-            handleChangeInput,
-            handleLogin,
-            handleRegister
+    const { 
+      handleChangeMode, 
+      handleChangeInput,
+      handleLogin,
+      handleRegister
     } = this;
 
     return (
       <LoginModal 
         visible={visible} 
         mode={mode} 
-        forms={form}
+        forms={form} 
         error={error}
         onChangeInput={handleChangeInput}
         onChangeMode={handleChangeMode}
@@ -99,6 +116,7 @@ export default connect(
     }),
     (dispatch) => ({
         BaseActions: bindActionCreators(baseActions, dispatch),
-        AuthActions: bindActionCreators(authActions, dispatch)
+        AuthActions: bindActionCreators(authActions, dispatch),
+        RegisterActions: bindActionCreators(registerActions, dispatch)
     })
 )(onClickOutside(LoginModalContainer));
