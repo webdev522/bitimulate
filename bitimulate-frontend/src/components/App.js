@@ -4,8 +4,7 @@ import { HomePage, TradePage, RegisterPage } from 'components';
 import { Route } from 'react-router-dom';
 import { 
   ScreenMaskContainer, 
-  LoginModalContainer,
-  RegisterScreenContainer
+  LoginModalContainer
  } from 'containers';
 
 class App extends Component {
@@ -17,7 +16,6 @@ class App extends Component {
         <Route path="/register" component={RegisterPage}/>
         <ScreenMaskContainer/>
         <LoginModalContainer/>
-        <RegisterScreenContainer/>
       </div>
     );
   }

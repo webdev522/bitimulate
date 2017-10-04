@@ -7,7 +7,7 @@
   overflow: hidden;
   clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
   position: relative;
-  transition: all .7s ease-in-out;
+  transition: all 1.5s ease-in-out;
   &.fixed {
     display: fixed;
   }
