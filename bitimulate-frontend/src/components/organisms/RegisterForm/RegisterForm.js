@@ -18,6 +18,7 @@ const RegisterForm = ({
   currency,
   optionIndex,
   displayNameExists,
+  error,
   onChangeNickname,
   onSetCurrency,
   onSelectOptionIndex,
@@ -30,9 +31,9 @@ const RegisterForm = ({
         title="Nickname"
         discription="Please use a nickname in our service.">
         { 
-          displayNameExists && <div className={cx('exists')}>Already taken nickname</div>
+          displayNameExists && <div className={cx('error')}>Already taken nickname</div>
         }
-        <Input value={nickname} onChange={onChangeNickname} onBlur={onNicknameBlur}/>
+        <Input maxLength={15} value={nickname} onChange={onChangeNickname} onBlur={onNicknameBlur}/>
       </SectionWithTitle>
       <SectionWithTitle title="Initial Money">
         <div className={cx('description')}>
@@ -43,8 +44,15 @@ const RegisterForm = ({
         <h4>Select Amount</h4>
         <InitialMoneyOptions currency={currency} optionIndex={optionIndex} onSelect={onSelectOptionIndex}/>
       </SectionWithTitle>
+      { 
+        error && (
+          <AlignRight>
+            <div className={cx('error')}>{error}</div>
+          </AlignRight>
+        )
+      }
       <AlignRight>
-        <Button disabled={displayNameExists} flat color="teal" className={cx('register-button')} xPadding="2rem" onClick={onSubmit}>Signup</Button>
+        <Button disabled={displayNameExists || error} flat color="teal" className={cx('register-button')} xPadding="2rem" onClick={onSubmit}>Signup</Button>
       </AlignRight>
     </div>
   );
