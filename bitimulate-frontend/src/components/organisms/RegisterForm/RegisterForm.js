@@ -17,17 +17,22 @@ const RegisterForm = ({
   nickname,
   currency,
   optionIndex,
+  displayNameExists,
   onChangeNickname,
   onSetCurrency,
   onSelectOptionIndex,
-  onSubmit
+  onSubmit,
+  onNicknameBlur
 }) => {
   return (
     <div className={cx('register-form')}>
       <SectionWithTitle
         title="Nickname"
         discription="Please use a nickname in our service.">
-        <Input value={nickname} onChange={onChangeNickname}/>
+        { 
+          displayNameExists && <div className={cx('exists')}>Already taken nickname</div>
+        }
+        <Input value={nickname} onChange={onChangeNickname} onBlur={onNicknameBlur}/>
       </SectionWithTitle>
       <SectionWithTitle title="Initial Money">
         <div className={cx('description')}>
@@ -39,7 +44,7 @@ const RegisterForm = ({
         <InitialMoneyOptions currency={currency} optionIndex={optionIndex} onSelect={onSelectOptionIndex}/>
       </SectionWithTitle>
       <AlignRight>
-        <Button flat color="teal" className={cx('register-button')} xPadding="2rem" onClick={onSubmit}>Signup</Button>
+        <Button disabled={displayNameExists} flat color="teal" className={cx('register-button')} xPadding="2rem" onClick={onSubmit}>Signup</Button>
       </AlignRight>
     </div>
   );

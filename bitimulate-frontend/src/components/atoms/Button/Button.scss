@@ -77,7 +77,18 @@
       }
     }
 
+    &.disabled {
+      background: material-color('grey', '300');
+      color: material-color('grey', '500');
+      cursor: default;
+      &:hover {
+        box-shadow: none;
+        background: material-color('grey', '300');
+      }
+      &:active {
+        background: material-color('grey', '300');
+      }
+    }
+
   }
-
-
 }
