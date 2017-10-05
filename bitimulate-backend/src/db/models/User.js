@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('mongoose-double')(mongoose);
 const { Schema } = mongoose;
 const crypto = require('crypto');
 const token = require('lib/token');
@@ -8,6 +9,12 @@ const { PASSWORD_HASH_KEY: secret } = process.env;
 function hash(password) {
   return crypto.createHmac('sha256', secret).update(password).digest('hex');
 }
+
+const Wallet = new Schema({
+  BTC: Schema.Types.Double,
+  USD: Schema.Types.Double,
+  KRW: Schema.Types.Double
+});
 
 const User = new Schema({
   displayName: String,
@@ -28,7 +35,15 @@ const User = new Schema({
     default: Date.now
   },
   metaInfo: {
-    activated: { type: Boolean, default: false }
+    // activated: { type: Boolean, default: false }
+  },
+  wallet: {
+    type: Wallet,
+    default: {
+      BTC: 0,
+      KRW: 0,
+      USD: 0
+    }
   }
 });
 
@@ -49,12 +64,19 @@ User.statics.findExistancy = function({email, displayName}) {
   });
 };
 
-User.statics.localRegister = function({ displayName, email, password }) {
+User.statics.localRegister = function({ displayName, email, password, initial }) {
   const user = new this({
     displayName,
     email,
-    password: hash(password)
+    password: hash(password),
+    metaInfo: {
+      initial
+    }
   });
+
+  // sets initial money
+  const { currency, value } = initial;
+  user.wallet[currency] = value;
   return user.save();
 };
 
