@@ -46,7 +46,7 @@ class LoginModalContainer extends Component {
     console.log('login')
   }
   handleRegister = async () => {
-    const { AuthActions, RegisterActions } = this.props;
+    const { AuthActions } = this.props;
     // reset error
     AuthActions.setError(null);
 
@@ -83,8 +83,11 @@ class LoginModalContainer extends Component {
     // close the modal, open the register screen
     this.handleClose();
 
+    // route 0.4s later (waite for transition)
     const { history } = this.props;
-    history.push('/register');
+    setTimeout(() => {
+      history.push('/register');
+    }, 400);
     
   }
   render() {
