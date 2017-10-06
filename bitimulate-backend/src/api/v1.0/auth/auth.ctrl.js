@@ -141,12 +141,11 @@ exports.localLogin = async (ctx) => {
       maxAge: 1000 * 60 * 60 * 24 * 7
     });
 
-    const { displayName, _id, metaInfo } = user;
+    const { displayName, _id } = user;
     
     ctx.body = {
-      displayName,
       _id,
-      metaInfo
+      displayName
     };
   } catch (e) {
     ctx.throw(e, 500);
