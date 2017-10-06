@@ -26,7 +26,8 @@ const LoginModal = ({
 
   const {
     email: emailError,
-    password: passwordError
+    password: passwordError,
+    localLogin: localLoginError
   } = error ? error.toJS() : { };
   
   const onButtonClick = isLogin ? onLogin : onRegister;
@@ -37,6 +38,7 @@ const LoginModal = ({
         <div className={cx('bar')}></div>
         <div className={cx('content')}>
           <h3>{modeText} with Email</h3>
+          <InputError error={localLoginError} noMarginTop/>
           <div className={cx('form')}>
             <Input 
               value={email}
@@ -52,7 +54,7 @@ const LoginModal = ({
               fullWidth big 
               placeholder="Password" 
               type="password"/>
-              <InputError error={passwordError}/>
+            <InputError error={passwordError}/>
           </div>
           <Button 
             flat color="teal" 

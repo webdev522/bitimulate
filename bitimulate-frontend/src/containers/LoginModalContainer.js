@@ -7,6 +7,7 @@ import onClickOutside from 'react-onclickoutside'
 import * as baseActions from 'store/modules/base';
 import * as authActions from 'store/modules/auth';
 import * as registerActions from 'store/modules/register';
+import * as userActions from 'store/modules/user';
 
 import validate from 'validate.js';
 
@@ -42,9 +43,23 @@ class LoginModalContainer extends Component {
     });
   }
 
-  handleLogin = () => {
-    console.log('login')
+  handleLogin = async () => {
+    const { AuthActions, UserActions, form } = this.props;
+    const { email, password } = form.toJS();
+
+    try {
+      await AuthActions.localLogin({
+        email, password
+      });
+      const { loginResult } = this.props;
+      UserActions.setUser(loginResult);
+      AuthActions.setError(null);
+      this.handleClose();
+    } catch (e) {
+      console.log(e);
+    }
   }
+
   handleRegister = async () => {
     const { AuthActions } = this.props;
     // reset error
@@ -74,10 +89,11 @@ class LoginModalContainer extends Component {
 
     try {
       await AuthActions.checkEmail(form.email);
-    } catch (e) {
       if(this.props.error) {
         return;
       }
+    } catch (e) {
+      return;
     }
 
     // close the modal, open the register screen
@@ -90,6 +106,7 @@ class LoginModalContainer extends Component {
     }, 400);
     
   }
+
   render() {
     const { visible, mode, form, error } = this.props;
     const { 
@@ -118,11 +135,13 @@ export default connect(
       visible: state.auth.getIn(['modal', 'visible']),
       mode: state.auth.getIn(['modal', 'mode']),
       form: state.auth.get('form'),
-      error: state.auth.get('error')
+      error: state.auth.get('error'),
+      loginResult: state.auth.get('loginResult')
     }),
     (dispatch) => ({
         BaseActions: bindActionCreators(baseActions, dispatch),
         AuthActions: bindActionCreators(authActions, dispatch),
-        RegisterActions: bindActionCreators(registerActions, dispatch)
+        RegisterActions: bindActionCreators(registerActions, dispatch),
+        UserActions: bindActionCreators(userActions, dispatch)
     })
 )(withRouter(onClickOutside(LoginModalContainer)));

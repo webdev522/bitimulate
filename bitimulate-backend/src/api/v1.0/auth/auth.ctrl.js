@@ -142,6 +142,7 @@ exports.localLogin = async (ctx) => {
     });
 
     const { displayName, _id, metaInfo } = user;
+    
     ctx.body = {
       displayName,
       _id,
