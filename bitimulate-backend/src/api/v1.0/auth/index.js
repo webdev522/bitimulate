@@ -13,5 +13,6 @@ auth.get('/exists/display-name/:displayName', authCtrl.checkDisplayName);
 auth.post('/register/local', authCtrl.localRegister);
 auth.post('/login/local', authCtrl.localLogin);
 auth.get('/check', authCtrl.check);
+auth.post('/logout', authCtrl.logout);
 
 module.exports = auth;

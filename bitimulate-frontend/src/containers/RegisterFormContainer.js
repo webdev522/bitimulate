@@ -3,6 +3,7 @@ import { RegisterForm } from 'components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as registerActions from 'store/modules/register';
+import * as userActions from 'store/modules/user';
 import debounce from 'lodash/debounce';
 import { withRouter } from 'react-router';
 
@@ -35,8 +36,8 @@ class RegisterFormContainer extends Component {
     RegisterActions.selectOptionIndex(index);
   }
 
-  handleSubmit = () => {
-    const { nickname, currency, optionIndex, authForm, RegisterActions } = this.props;
+  handleSubmit = async () => {
+    const { nickname, currency, optionIndex, authForm, history, RegisterActions, UserActions } = this.props;
     const { email, password } = authForm.toJS();
     
     if (nickname.length < 1) {
@@ -44,15 +45,22 @@ class RegisterFormContainer extends Component {
       return;
     }
 
-    RegisterActions.submit({
-      displayName: nickname,
-      email,
-      password,
-      initialMoney: {
-        currency,
-        index: optionIndex
-      }
-    });
+    try {
+      await RegisterActions.submit({
+        displayName: nickname,
+        email,
+        password,
+        initialMoney: {
+          currency,
+          index: optionIndex
+        }
+      });
+      const { result } = this.props;
+      UserActions.setUser(result);
+      history.push('/');
+    } catch (e) {
+      console.log('error~~~~~~~~~~~~~~~~~~~~~');
+    }
   }
 
   render() {
@@ -90,9 +98,11 @@ export default connect(
     currency: state.register.get('currency'),
     optionIndex: state.register.get('optionIndex'),
     displayNameExists: state.register.get('displayNameExists'),
-    error: state.register.get('error')
+    error: state.register.get('error'),
+    result: state.register.get('result')
   }),
   (dispatch) => ({
-    RegisterActions: bindActionCreators(registerActions, dispatch)
+    RegisterActions: bindActionCreators(registerActions, dispatch),
+    UserActions: bindActionCreators(userActions, dispatch)
   })
 )(withRouter(RegisterFormContainer));
