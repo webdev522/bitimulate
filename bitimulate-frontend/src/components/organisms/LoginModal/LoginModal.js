@@ -13,7 +13,8 @@ const LoginModal = ({
   onChangeInput,
   onChangeMode,
   onLogin,
-  onRegister
+  onRegister,
+  onSocialLogin
 }) => {
   const isLogin = mode === 'login';
   const modeText = isLogin ? 'Login' : 'Signup';
@@ -69,7 +70,7 @@ const LoginModal = ({
             <div className={cx('or')}>OR</div>
           </div>
           <h3>{modeText} with Social Account</h3>
-          <SocialLoginButton/>
+          <SocialLoginButton onSocialLogin={onSocialLogin}/>
         </div>
       </div>
     </Modal>
