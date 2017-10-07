@@ -7,6 +7,8 @@
   "dependencies": {
     "axios": "^0.16.2",
     "dotenv": "^4.0.0",
+    "fb": "^2.0.0",
+    "googleapis": "^22.2.0",
     "joi": "^11.0.3",
     "jsonwebtoken": "^8.0.1",
     "koa": "^2.3.0",
