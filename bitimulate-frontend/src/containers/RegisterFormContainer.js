@@ -37,13 +37,36 @@ class RegisterFormContainer extends Component {
   }
 
   handleSubmit = async () => {
-    const { nickname, currency, optionIndex, authForm, history, RegisterActions, UserActions } = this.props;
-    const { email, password } = authForm.toJS();
+    const { socialInfo, nickname, currency, optionIndex, authForm, history, RegisterActions, UserActions } = this.props;
     
     if (nickname.length < 1) {
       RegisterActions.setError('Please input your nickname');
       return;
     }
+
+    // social register 👇
+    if (socialInfo) {
+      const { accessToken, provider } = socialInfo.toJS();
+      await RegisterActions.socialRegister({
+        displayName: nickname,
+        provider,
+        accessToken,
+        initialMoney: {
+          currency,
+          index: optionIndex
+        }
+      });
+
+      const { result } = this.props;
+      UserActions.setUser(result);
+      history.push('/');
+      
+      return;
+    }
+
+    // local register 👇
+    
+    const { email, password } = authForm.toJS();
 
     try {
       await RegisterActions.submit({

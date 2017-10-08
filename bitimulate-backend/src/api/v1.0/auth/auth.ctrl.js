@@ -229,6 +229,7 @@ exports.socialLogin = async (ctx) => {
 
 exports.socialRegister = async (ctx) => {
   const { body } = ctx.request;
+  const { provider } = ctx.params;
   // check schema
   const schema = Joi.object({
     displayName: Joi.string().regex(/^[a-zA-Z0-9]{3,12}$/).required(),
@@ -250,10 +251,9 @@ exports.socialRegister = async (ctx) => {
 
   const {
     displayName,
-    provider,
     accessToken,
     initialMoney
-  } = ctx.body;
+  } = body;
   // get social info
   let profile = null;
   try {
@@ -266,6 +266,11 @@ exports.socialRegister = async (ctx) => {
     ctx.status = 403;
     return;
   }
+
+  const {
+    email,
+    id: socialId
+  } = profile;
 
   // check email (+1 time)
   if (profile.email) {
@@ -306,6 +311,34 @@ exports.socialRegister = async (ctx) => {
     value
   };
   // create user account
+  let user = null;
+  try {
+    user = await User.socialRegister({
+      displayName,
+      email,
+      provider,
+      accessToken,
+      socialId,
+      initial
+    });
+  } catch (e) {
+    ctx.throw(e, 500);
+  }
+
+  ctx.body = {
+    displayName,
+    _id: user._id
+  };
+
+  try {
+    const btmToken = await user.generateToken();
+    ctx.cookies.set('access_token', btmToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7
+    });
+  } catch (e) {
+    ctx.throw(e, 500);
+  }
   // generate accessToken
   // set cookie
 };
