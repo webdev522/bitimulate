@@ -8,7 +8,7 @@ const RegisterTemplate = ({children}) => {
   return (
     <div className={cx('register-template')}>
       <h1>Register</h1>
-      <p>asdfasdfafd</p>
+      <p>It's almost done, please input some information needed for trading.</p>
       <section>
         {children}
       </section>
