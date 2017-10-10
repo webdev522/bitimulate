@@ -195,6 +195,21 @@ exports.socialLogin = async (ctx) => {
 
   if (user) {
     // if account exists, set JWt and return userInfo
+    // set user status
+    try {
+      const btmToken = await user.generateToken();
+      ctx.cookies.set('access_token', btmToken, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+      });  
+    } catch (e) {
+      ctx.throw(e, 500);
+    }
+    const { _id, displayName } = user;
+    ctx.body = {
+      displayName,
+      _id
+    };
     return;
   }
 
@@ -218,7 +233,16 @@ exports.socialLogin = async (ctx) => {
         ctx.throw(e, 500);
       }
       // set jwt and return account info
-
+      try {
+        // set user status
+        const btmToken = await duplicated.generateToken();
+        ctx.cookies.set('access_token', btmToken, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24 * 7
+        });
+      } catch (e) {
+        ctx.throw(e, 500);
+      }
     }
   }
 

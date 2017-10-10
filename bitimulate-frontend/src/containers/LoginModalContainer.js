@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import redux dependencies
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { LoginModal } from 'components';
+import { LoginModal, DimmerSpinner } from 'components';
 import onClickOutside from 'react-onclickoutside'
 import * as baseActions from 'store/modules/base';
 import * as authActions from 'store/modules/auth';
@@ -109,7 +109,7 @@ class LoginModalContainer extends Component {
   }
 
   handleSocialLogin = async (provider) => {
-    const { AuthActions } = this.props;
+    const { AuthActions, UserActions } = this.props;
     try {
       await AuthActions.providerLogin(provider);
       const { socialInfo } = this.props;
@@ -129,8 +129,12 @@ class LoginModalContainer extends Component {
           history.push('/register');
         }, 400);
       }
-
-      // todo: process login ...
+      
+      const { loginResult } = this.props;
+      storage.set('__BTM_USER__', loginResult);
+      UserActions.setUser(loginResult);
+      AuthActions.setError(null);
+      this.handleClose();
       
     } catch (e) {
       return;
@@ -138,7 +142,7 @@ class LoginModalContainer extends Component {
   }
 
   render() {
-    const { visible, mode, form, error } = this.props;
+    const { visible, mode, form, error, pending } = this.props;
     const { 
       handleChangeMode, 
       handleChangeInput,
@@ -148,16 +152,19 @@ class LoginModalContainer extends Component {
     } = this;
 
     return (
-      <LoginModal 
-        visible={visible} 
-        mode={mode} 
-        forms={form} 
-        error={error}
-        onChangeInput={handleChangeInput}
-        onChangeMode={handleChangeMode}
-        onLogin={handleLogin}
-        onRegister={handleRegister}
-        onSocialLogin={handleSocialLogin}/>
+      <div>
+        <LoginModal 
+          visible={visible} 
+          mode={mode} 
+          forms={form} 
+          error={error}
+          onChangeInput={handleChangeInput}
+          onChangeMode={handleChangeMode}
+          onLogin={handleLogin}
+          onRegister={handleRegister}
+          onSocialLogin={handleSocialLogin}/>
+        <DimmerSpinner visible={pending}/>
+      </div>
     );
   }
 }
@@ -170,7 +177,8 @@ export default connect(
       error: state.auth.get('error'),
       loginResult: state.auth.get('loginResult'),
       socialInfo: state.auth.get('socialInfo'),
-      redirectToRegister: state.auth.get('redirectToRegister')
+      redirectToRegister: state.auth.get('redirectToRegister'),
+      pending: state.pender.pending['LOCAL_LOGIN'] || state.pender.pending['auth/SOCIAL_LOGIN'] || state.pender.pending['auth/PROVIDER_LOGIN']
     }),
     (dispatch) => ({
         BaseActions: bindActionCreators(baseActions, dispatch),
