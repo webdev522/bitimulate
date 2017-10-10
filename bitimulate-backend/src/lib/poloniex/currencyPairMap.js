@@ -93,5 +93,11 @@ module.exports = {
   '190': 'ETH_BCH',
   '191': 'USDT_BCH',
   '192': 'BTC_ZRX',
-  '193': 'ETH_ZRX'
+  '193': 'ETH_ZRX',
+  '194': 'BTC_CVC',
+  '195': 'ETH_CVC',
+  '196': 'BTC_OMG',
+  '197': 'ETH_OMG',
+  '198': 'BTC_GAS',
+  '199': 'ETH_GAS'
 };
