@@ -21,8 +21,11 @@ Worker.prototype.work = function() {
         // when poloniex doesn't reply for 60s
         if (e.code !== 'ECONNABORTED') {
           console.error(e);
+        } else {
+          console.log('time out');
         }
         this.index--;
+        setTimeout(repeat, 1000);
         return;
       }
 
