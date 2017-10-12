@@ -16,13 +16,13 @@ const jwtMiddleware = require('lib/middlewares/jwt');
 
 const cache = require('lib/cache');
 
-async function test() {
-  await cache.set('hello', 'world');
-  const value = await cache.get('hello');
-  console.log(value);
-}
+// async function test() {
+//   await cache.set('hello', 'world');
+//   const value = await cache.get('hello');
+//   console.log(value);
+// }
 
-test();
+// test();
 
 db.connect();
 const app = new Koa();
