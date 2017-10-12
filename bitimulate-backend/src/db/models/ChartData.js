@@ -13,23 +13,34 @@ const ChartData = new Schema({
   close: Types.Double,
   volume: Types.Double,
   quoteVolume: Types.Double,
-  weightedAverage: Types.Double
+  weightedAverage: Types.Double,
+  period: Number
 });
 
-ChartData.statics.massImport = function(name, data) {
+ChartData.statics.drop = function() {
+  return this.remove({}).exec();
+};
+
+ChartData.statics.massImport = function(name, data, period) {
   const converted = data.map(data => Object.assign(
     {},
     data,
     {
       date: data.date * 1000,
-      name
+      name,
+      period
     }
   ));
   this.create(converted);
 };
 
-ChartData.statics.drop = function() {
-  return this.remove({}).exec();
+ChartData.statics.findByNameAndPeriod = function(name, period) {
+  return this.find({
+    name,
+    period
+  }).sort({
+    date: 1
+  });
 };
 
 module.exports = mongoose.model('ChartData', ChartData);

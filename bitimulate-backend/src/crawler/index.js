@@ -32,7 +32,7 @@ const initialize = async () => {
   const { lastUpdatedDate } = config;
   if (!lastUpdatedDate) {
     await ChartData.drop(); // remove all chartdata
-    log('dropped ChartData');
+    log.info('dropped ChartData');
   }
 
   const from = {
@@ -98,13 +98,13 @@ async function registerInitialExchangeRate() {
   console.log('succeed!');
 }
 
-async function importData(period, start) {
+async function importData(period = 86400, start) {
   
   log('loading ChartData...');
   
   // create the list of requests
   const requests = currencyPairs.map((currencyPair) => () => poloniex.getChartData(currencyPair, period, start).then(
-    (data) => ChartData.massImport(currencyPair, data)
+    (data) => ChartData.massImport(currencyPair, data, period)
   ));
   
   // initialize progressbar
