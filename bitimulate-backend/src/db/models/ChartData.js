@@ -24,7 +24,7 @@ ChartData.statics.massImport = function (name, data, period) {
   if (data.length === 1 && data[0].date === 0) {
     return Promise.resolve();
   }
-  
+
   const converted = data.map(data => Object.assign({}, data, {
     date: data.date * 1000,
     name,
@@ -32,6 +32,18 @@ ChartData.statics.massImport = function (name, data, period) {
   }));
   return this.create(converted);
 };
+
+// ChartData.statics.getLastChartData = function(name) {
+//   return this.find({
+//     name,
+//     period: 300
+//   }).limit(1).exec().then((result) => {
+//     if (!result.length) {
+//       return null;
+//     }
+//     return result[0];
+//   });
+// };
 
 ChartData.statics.findByNameAndPeriod = function(name, period) {
   const weekly = { 
