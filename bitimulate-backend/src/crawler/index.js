@@ -6,18 +6,47 @@ const ExchangeRate = require('db/models/ExchangeRate');
 const ChartData = require('db/models/ChartData');
 const socket = require('./socket');
 const { parseJSON, polyfill } = require('lib/common');
-const currencyPairMap = require('lib/poloniex/currencyPairMap');
 const currencyPairs = require('lib/poloniex/currencyPairs');
 const progress = require('cli-progress');
-const Worker = require('./workers');
+const Worker = require('./worker');
+const config = require('./config.json');
+const log = require('lib/log');
+const jsonfile = require('jsonfile');
+const path = require('path');
+
+function updateDate() {
+  const file = path.join(__dirname, 'config.json');
+  return new Promise((resolve, reject) => {
+    jsonfile.writeFile(file, {
+      lastUpdatedDate: new Date().getTime()
+    }, (err) => {
+      if (err) reject(err);
+      resolve();
+    });
+  });
+}
 
 const initialize = async () => {
-  db.connect();
-  await ChartData.drop(); // remove all chartdata
-  await importData(); // daily record from 2015/01/01
+  await db.connect();
+
+  const { lastUpdatedDate } = config;
+  if (!lastUpdatedDate) {
+    await ChartData.drop(); // remove all chartdata
+    log('dropped ChartData');
+  }
+
+  const from = {
+    yearly: lastUpdatedDate ? lastUpdatedDate / 1000 : 1420070400,
+    monthly: lastUpdatedDate ? lastUpdatedDate / 1000 : (new Date() / 1000) - 60 * 60 * 24 * 30
+  };
+  
+  await importData(undefined, from.yearly); // daily record from 2015/01/01
   const current = (new Date()) / 1000;
-  await importData(300, (new Date() / 1000) - 60 * 60 * 24 * 30); // 5min's record from last month
+  await importData(300, from.monthly); // 5min's record from last month
   await importData(300, current); // additional for step 1 and 2
+
+  updateDate();
+
   socket.connect();
 };
 
@@ -54,7 +83,7 @@ async function registerInitialExchangeRate() {
 
   // removes all the data from the collection (only for temporary use)
   await ExchangeRate.drop();
-  console.log('dropped exchangerate collection');
+  log('dropped exchangerate collection');
 
   const keys = Object.keys(tickers);
   const promises = keys.map(
@@ -71,7 +100,7 @@ async function registerInitialExchangeRate() {
 
 async function importData(period, start) {
   
-  console.log('reloading chart data...');
+  log('loading ChartData...');
   
   // create the list of requests
   const requests = currencyPairs.map((currencyPair) => () => poloniex.getChartData(currencyPair, period, start).then(

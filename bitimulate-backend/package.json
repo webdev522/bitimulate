@@ -11,10 +11,12 @@
     "fb": "^2.0.0",
     "googleapis": "^22.2.0",
     "joi": "^11.0.3",
+    "jsonfile": "^4.0.0",
     "jsonwebtoken": "^8.0.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
+    "moment": "^2.19.1",
     "mongoose": "^4.11.10",
     "mongoose-double": "^0.0.1",
     "nodemon": "^1.11.0",
@@ -30,6 +32,6 @@
   },
   "scripts": {
     "start:dev": "NODE_PATH=src nodemon --watch src/ src/index.js",
-    "crawler:dev": "NODE_PATH=src nodemon --watch src/crawler/ src/crawler/index.js"
+    "crawler:dev": "NODE_PATH=src nodemon --watch src/crawler/ src/crawler/index.js --ignore src/crawler/*.json"
   }
 }
