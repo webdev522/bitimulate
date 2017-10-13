@@ -10,6 +10,7 @@ const currencyMap = require('lib/poloniex/currencyPairMap');
 const initialize = async () => {
   await db.connect();
   // await registerInitialExchangeRate();
+  // await updateEntireRate();
   socket.connect();
 };
 
