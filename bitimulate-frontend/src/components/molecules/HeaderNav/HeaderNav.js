@@ -10,7 +10,7 @@ const HeaderNav = () => {
     <FlexBox row
       className={cx('header-nav')}>
       <NavItem>
-        Exchange
+        Trade
       </NavItem>
       <NavItem>
         Dashboard

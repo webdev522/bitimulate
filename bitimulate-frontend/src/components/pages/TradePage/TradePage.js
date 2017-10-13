@@ -1,10 +1,11 @@
 import React from 'react';
+import { PageTemplate } from 'components';
+import {HeaderContainer} from 'containers';
 
 const TradePage = () => {
   return (
-    <div>
-      Trade
-    </div>
+    <PageTemplate header={<HeaderContainer solid/>}>
+    </PageTemplate>
   );
 };
 
