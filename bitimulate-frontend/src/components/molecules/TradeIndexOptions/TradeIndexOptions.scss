@@ -1,11 +1,19 @@
+@import 'utils';
+
 .options {
-  padding-top: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  // justify-content: flex-end;
   align-items: center;
+  @include material-shadow(1, 0.5);
+  .show-pinned {
+    // margin-left: auto;
+  }
   .selector {
-
+    margin-left: auto;
   }
   .reverser {
     margin-top: -2px;

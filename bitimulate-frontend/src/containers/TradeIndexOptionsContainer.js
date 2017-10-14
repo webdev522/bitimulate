@@ -22,16 +22,23 @@ class TradeIndexOptionsContainer extends Component {
     });
   }
 
+  handleToggleShowPinned = () => {
+    const { TradeActions } = this.props;
+    TradeActions.toggleShowPinned();
+  }
+
   render() {
-    const { handleToggleAsc, handleSelectSort } = this;
+    const { handleToggleAsc, handleSelectSort, handleToggleShowPinned } = this;
     const { options } = this.props;
-    const { sortBy, asc } = options.toJS();
+    const { sortBy, asc, showPinned } = options.toJS();
     return (
       <div>
         <TradeIndexOptions
           sortBy={sortBy} asc={asc}
+          showPinned={showPinned}
           onToggleAsc={handleToggleAsc}
           onSelectSort={handleSelectSort}
+          onToggleShowPinned={handleToggleShowPinned}
         />
       </div>
     );

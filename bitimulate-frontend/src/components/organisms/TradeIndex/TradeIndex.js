@@ -5,8 +5,11 @@ import { RateInfoCard } from 'components';
 
 const cx = classNames.bind(styles);
 
-const TradeIndex = ({rate}) => {
-  const rateInfoCardList = rate.map(
+const TradeIndex = ({rate, pinMap, showPinned, onTogglePin}) => {
+  let filtered = showPinned ? (
+    rate.filter((info) => pinMap[info.get('currencyKey')])
+  ) : rate;
+  const rateInfoCardList = filtered.map(
     (info) => (
       <RateInfoCard
         key={info.get('name')}
@@ -15,6 +18,8 @@ const TradeIndex = ({rate}) => {
         volume={info.get('baseVolume')}
         last={info.get('last')}
         currencyName={info.get('currencyName')}
+        onTogglePin={() => onTogglePin(info.get('currencyKey'))}
+        pinned={pinMap[info.get('currencyKey')]}
         />
     )
   );

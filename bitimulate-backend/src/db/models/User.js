@@ -36,6 +36,10 @@ const User = new Schema({
   },
   metaInfo: {
     // activated: { type: Boolean, default: false }
+    initial: {
+      currency: String,
+      value: Schema.Types.Double
+    },
     pinned: [String]
   },
   wallet: {

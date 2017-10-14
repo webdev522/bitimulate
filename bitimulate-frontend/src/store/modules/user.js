@@ -10,12 +10,16 @@ const SET_USER = 'user/SET_USER';
 const CHECK_LOGIN_STATUS = 'user/CHECK_LOGIN_STATUS';
 const LOGOUT = 'user/LOGOUT';
 const GET_META_INFO = 'user/GET_META_INFO';
+const TOGGLE_PIN_KEY = 'user/TOGGLE_PIN_KEY';
+const PATCH_META_INFO = 'user/PATCH_META_INFO';
 
 // action creator
 export const setUser = createAction(SET_USER);
 export const checkLoginStatus = createAction(CHECK_LOGIN_STATUS, AuthAPI.checkLoginStatus);
 export const logout = createAction(LOGOUT, AuthAPI.logout);
 export const getMetaInfo =createAction(GET_META_INFO, UserAPI.getMetaInfo);
+export const togglePinKey = createAction(TOGGLE_PIN_KEY);
+export const patchMetaInfo = createAction(PATCH_META_INFO, UserAPI.patchMetaInfo);
 
 // initial state
 const initialState = Map({
@@ -51,5 +55,19 @@ export default handleActions({
         const { data: metaInfo } = action.payload;
         return state.set('metaInfo', fromJS(metaInfo));
       }
-    })
+    }),
+    [TOGGLE_PIN_KEY]: (state, action) => {
+      const { payload: key } = action;
+
+      const pinned = state.getIn(['metaInfo', 'pinned']);
+      const index = pinned.findIndex(k => k === key);
+      
+      // not found
+      if(index === -1) {
+        return state.setIn(['metaInfo', 'pinned'], pinned.push(key));
+      }
+
+      // found
+      return state.deleteIn(['metaInfo', 'pinned', index]);
+    }
 }, initialState);
