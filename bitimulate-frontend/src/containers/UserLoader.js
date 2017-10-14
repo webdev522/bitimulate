@@ -17,6 +17,7 @@ class UserLoader extends Component {
 
     try {
       await UserActions.checkLoginStatus();
+      await UserActions.getMetaInfo();
       if (!user || (user && user._id !== this.props.user.get('_id'))) {
         storage.set('__BTM_USER__', this.props.user.toJS());
       }

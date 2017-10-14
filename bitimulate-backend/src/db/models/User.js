@@ -36,6 +36,7 @@ const User = new Schema({
   },
   metaInfo: {
     // activated: { type: Boolean, default: false }
+    pinned: [String]
   },
   wallet: {
     type: Wallet,
