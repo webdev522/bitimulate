@@ -20,10 +20,18 @@ class Options extends Component {
     onClose();
   }
 
+  handleSelect = (value) => {
+    const { onSelect, onClose } = this.props
+    onSelect(value);
+    onClose();
+  }
+
   render() {
-    const {options } = this.props;
+    const { options } = this.props;
+    const { handleSelect } = this;
+
     const optionList = options.map(
-      ({name, text}) => <SelectorOption name={name} key={name}>{text}</SelectorOption>
+      ({name, text}) => <SelectorOption key={name} onClick={()=>handleSelect(name)}>{text}</SelectorOption>
     );
     return (
       <div className={cx('options')}>
@@ -55,12 +63,14 @@ class Selector extends Component{
   render() {
     const { open } = this.state;
     const { handleOpen, handleClose } = this;
-    const { options } = this.props;
+    const { onSelect, options, value } = this.props;
+    
+    const selected = options.find(option => option.name === value);
 
     return (
       <div className={cx('selector-wrapper')}>
         <div className={cx('selector')} onClick={handleOpen}>
-          A to Z
+          {selected.text}
           <SortIcon/>
         </div>
         <CSSTransitionGroup
@@ -71,7 +81,7 @@ class Selector extends Component{
             leave: cx('options-leave')
           }}
         >
-        { open && <Options eventTypes={["click", "touchend"]} onClose={handleClose} options={options}/> }
+        { open && <Options eventTypes={["click", "touchend"]} onClose={handleClose} onSelect={onSelect} options={options}/> }
         </CSSTransitionGroup>
       </div>
     );

@@ -1,0 +1,50 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as tradeActions from 'store/modules/trade';
+import { TradeIndexOptions } from 'components';
+
+class TradeIndexOptionsContainer extends Component {
+  handleToggleAsc = () => {
+    console.log('bbbbb');
+    const { TradeActions, options } = this.props;
+    const asc = options.get('asc');
+    TradeActions.setIndexOption({
+      name: 'asc',
+      value: !asc
+    });
+  }
+
+  handleSelectSort = (value) => {
+    console.log('aaaaa');
+    const { TradeActions } = this.props;
+    TradeActions.setIndexOption({
+      name: 'sortBy',
+      value
+    });
+  }
+
+  render() {
+    const { handleToggleAsc, handleSelectSort } = this;
+    const { options } = this.props;
+    const { sortBy, asc } = options.toJS();
+    return (
+      <div>
+        <TradeIndexOptions
+          sortBy={sortBy} asc={asc}
+          onToggleAsc={handleToggleAsc}
+          onSelectSort={handleSelectSort}
+        />
+      </div>
+    );
+  }
+}
+
+export default connect(
+  (state) => ({
+    options: state.trade.getIn(['index', 'options'])
+  }),
+  (dispatch) => ({
+    TradeActions: bindActionCreators(tradeActions, dispatch)
+  })
+)(TradeIndexOptionsContainer);
