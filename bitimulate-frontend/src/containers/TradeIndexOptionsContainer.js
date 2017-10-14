@@ -6,7 +6,6 @@ import { TradeIndexOptions } from 'components';
 
 class TradeIndexOptionsContainer extends Component {
   handleToggleAsc = () => {
-    console.log('bbbbb');
     const { TradeActions, options } = this.props;
     const asc = options.get('asc');
     TradeActions.setIndexOption({
@@ -16,7 +15,6 @@ class TradeIndexOptionsContainer extends Component {
   }
 
   handleSelectSort = (value) => {
-    console.log('aaaaa');
     const { TradeActions } = this.props;
     TradeActions.setIndexOption({
       name: 'sortBy',
