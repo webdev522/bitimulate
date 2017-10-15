@@ -4,6 +4,9 @@ import classNames from 'classnames/bind';
 import { HoverCard } from 'components';
 import PinIcon from 'react-icons/lib/ti/pin';
 import { getCurrency } from 'lib/utils';
+import { withRouter } from 'react-router'
+import { scrollTo } from 'lib/utils';
+
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +18,12 @@ class RateInfoCard extends Component {
   }
 
   timeoutId = null;
+
+  handleOpenCurrency = () => {
+    const { history, currencyKey } = this.props;
+    history.push(`/trade/${currencyKey}`);
+    scrollTo(0);
+  }
 
   componentWillUnmount() {
     if(this.timeoutId) {
@@ -30,13 +39,12 @@ class RateInfoCard extends Component {
   }
 
   highlight = (greater) => {
-    console.log('highlighting..', greater, this.props.currencyName);
     this.setState({
       highlight: true,
       greater
     });
 
-    setTimeout(() => {
+    this.timeoutId = setTimeout(() => {
       this.setState({
         highlight: false
       });
@@ -47,8 +55,7 @@ class RateInfoCard extends Component {
     if(prevProps.last !== this.props.last) {
       this.highlight(this.props.last > prevProps.last);
     }
-  }
-  
+  }  
 
   render() {
     const {
@@ -61,8 +68,9 @@ class RateInfoCard extends Component {
       pinned
     } = this.props;
     const { highlight, greater } = this.state;
+    const { handleOpenCurrency } = this;
 
-    if(!currencyName) return null;
+    if (!currencyName) return null;
     
       const parsedPercentage = Math.round(parseFloat(percentage) * 10000) / 100;
       const parsedVolume = Math.round(parseFloat(volume) * 100) / 100;
@@ -70,10 +78,10 @@ class RateInfoCard extends Component {
     
       return (
         <div className={cx('wrapper')}>
-          <HoverCard className={cx('rate-info-card', highlight && (greater ? 'green' : 'red'))}>
+          <HoverCard className={cx('rate-info-card', highlight && (greater ? 'green' : 'red'))} onClick={handleOpenCurrency}>
             <div className={cx('head')}>
               <div className={cx('short-name')}>{currencyKey}</div>
-              <div className={cx('pin-wrapper', { active: pinned })}><PinIcon onClick={onTogglePin}/></div>
+              <div className={cx('pin-wrapper', { active: pinned })}><PinIcon onClick={(e) => { e.stopPropagation(); onTogglePin(); }}/></div>
             </div>
             <div className={cx('percentage', { positive: parsedPercentage > 0, netural: parsedPercentage === 0 })}>({parsedPercentage.toFixed(2)}%)</div>
             <div className={cx('value')}>{value}</div>
@@ -89,4 +97,4 @@ class RateInfoCard extends Component {
   }
 }
 
-export default RateInfoCard;
+export default withRouter(RateInfoCard);
