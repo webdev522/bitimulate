@@ -72,14 +72,21 @@ const messageHandler = {
     if (!data) return;
     const converted = poloniex.convertToTickerObject(data);
     const { name, ...rest } = converted;
-    if (!name) return;
+    if (!name || name === 'NULL_NULL') return;
     
     try {
       await ExchangeRate.updateTicker(name, rest);
-
-      const str = JSON.stringify({...converted, lastUpdated: new Date()});
-      publisher.publish('tickers', str);
       
+      const { last, percentChange, baseVolume, quoteVolume } = converted;
+      const str = JSON.stringify({
+        name, 
+        last: parseFloat(last), 
+        percentChange: parseFloat(percentChange), 
+        baseVolume: parseFloat(baseVolume), 
+        quoteVolume: parseFloat(quoteVolume), 
+        lastUpdated: new Date()});
+      publisher.publish('tickers', str);
+
       log('Updated', name);
       // console.log('[Update]', name, new Date());
     } catch (e) {

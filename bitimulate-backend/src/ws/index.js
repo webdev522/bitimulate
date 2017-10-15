@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const shortid = require('shortid');
 const redis = require('redis');
+const { parseJSON, compress } = require('./utils');
 
 const subscriber = redis.createClient();
 subscriber.subscribe('tickers');
@@ -15,19 +16,26 @@ ws.get('/ws', (ctx, next) => {
   const id = shortid.generate();
   ctx.websocket.id = id;
 
-  const listener = (channel, message) => {
+  const listener = async (channel, message) => {
     if (channel === 'tickers') {
       const msg = JSON.stringify({
         code: msgTypes.ticker,
         data: message
       });
-      ctx.websocket.send(msg);
+
+      try {
+        const compressed = await compress(msg);
+        
+        ctx.websocket.send(compressed);
+      } catch (e) {
+
+      }
     }
   };
   subscriber.on('message', listener);
 
   ctx.websocket.on('close', () => {
-    subscriber.removeListener(listener);
+    subscriber.removeListener('message', listener);
   }); 
 });
 
