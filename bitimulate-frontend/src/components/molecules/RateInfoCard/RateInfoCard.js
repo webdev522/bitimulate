@@ -3,7 +3,7 @@ import styles from './RateInfoCard.scss';
 import classNames from 'classnames/bind';
 import { HoverCard } from 'components';
 import PinIcon from 'react-icons/lib/ti/pin';
-import { getCurrency } from 'lib/utils';
+// import { getCurrency } from 'lib/utils';
 import { withRouter } from 'react-router'
 import { scrollTo } from 'lib/utils';
 

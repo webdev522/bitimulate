@@ -399,8 +399,8 @@ class TradeChart extends Component {
   }  
 
   render() {
-    const {loading, onSelectChartType, chartType, data} = this.props;
-    const empty = data.isEmpty();
+    const {loading, onSelectChartType, chartType} = this.props;
+    // const empty = data.isEmpty();
     return (
       <div className={cx('trade-chart-wrapper')}>
         <ButtonSelector options={chartTypes} value={chartType} onSelect={onSelectChartType}/>

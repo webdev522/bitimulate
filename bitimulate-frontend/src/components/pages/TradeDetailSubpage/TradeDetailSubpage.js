@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import styles from './TradeDetailSubpage.scss';
-import classNames from 'classnames/bind';
+// import styles from './TradeDetailSubpage.scss';
+// import classNames from 'classnames/bind';
 import { TradeChartContainer } from 'containers';
 
-const cx = classNames.bind(styles);
+// const cx = classNames.bind(styles);
 
 class TradeDetailSubpage extends Component { 
   scrollToTop = () => {
