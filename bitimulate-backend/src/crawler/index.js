@@ -72,7 +72,8 @@ const messageHandler = {
     if (!data) return;
     const converted = poloniex.convertToTickerObject(data);
     const { name, ...rest } = converted;
-    if (!name || name === 'NULL_NULL') return;
+    if (!name) return;
+    if (name === 'NULL_NULL') return;
     
     try {
       await ExchangeRate.updateTicker(name, rest);

@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styles from './TradeChart.scss';
 import classNames from 'classnames/bind';
 import echarts from 'echarts';
 import moment from 'moment';
-import {Spinner, ButtonSelector} from 'components';
+import { Spinner, ButtonSelector, CurrentInfo } from 'components';
 import debounce from 'lodash/debounce';
 import { chartTypes } from 'lib/variables';
+import { getCurrency } from 'lib/utils';
 
 const cx = classNames.bind(styles);
 
@@ -399,10 +400,19 @@ class TradeChart extends Component {
   }  
 
   render() {
-    const {loading, onSelectChartType, chartType} = this.props;
+    const {loading, onSelectChartType, chartType, currencyKey,  selectedRate} = this.props;
     // const empty = data.isEmpty();
+    const current = getCurrency(currencyKey);
     return (
       <div className={cx('trade-chart-wrapper')}>
+        { current && <div className={cx('currency-head')}>
+          <div className={cx('title')}>{current && current.get('name')} 거래</div>
+          <div className={cx('desc')}>
+            {currencyKey === 'BTC' 
+              ? 'BTC/USD'
+              : `${currencyKey}/BTC`}
+          </div>
+        </div> }      
         <ButtonSelector options={chartTypes} value={chartType} onSelect={onSelectChartType}/>
         <div className={cx('trade-chart')}>
           <div className={cx('unit')}><b>Candlesticks:</b> {chartTypes.find(c=>c.name === chartType).unit}</div>
@@ -414,6 +424,7 @@ class TradeChart extends Component {
               this.chart = ref
             }}></div>}
         </div>
+        { selectedRate && <CurrentInfo info={selectedRate}/>}
       </div>
     )
   }
