@@ -36,21 +36,28 @@ class TradeChart extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.loading && !this.props.loading) {
       this.drawChart();
+      return;
     }
     
     if (prevProps.data !== this.props.data) {
       this.updateChart();
     }
   }
+
   updateChart = () => {
     if(!this.echart || !this.series) {
       return;
     }
   
+    const { data } = this.props;
+    if (data.isEmpty()) return;
+
     console.log('updating..');
   
-    const { series } = this;
-    const { data } = this.props;
+    const { series, xAxis } = this;
+
+    const dates = data.map(info => new Date(info.get('date') * 1000)).toJS();
+    dates.push(new Date(dates[dates.length - 1].getTime() + dates[1].getTime() - dates[0].getTime()));
   
     const candleStickData = data.map(info => {
       return [
@@ -68,11 +75,23 @@ class TradeChart extends Component {
           .toFixed(10)
       ];
     }).toJS();
+
+    const volumes = data.map(info => info.get('volume')).toJS();
   
+    xAxis[0].data = dates;
+    xAxis[1].data = dates;
     series[0].data = candleStickData;
+    series[1].data = calculateMA(data, 5);
+    series[2].data = calculateMA(data, 15);
+    series[3].data = calculateMA(data, 50);
+    series[4].data = volumes;
+
     this.echart.setOption({
-      series
+      series,
+      xAxis
     });
+
+    console.log('and it\'s, remember me');
   }
 
   componentWillUnmount() {
@@ -361,7 +380,8 @@ class TradeChart extends Component {
     };
 
     this.series = option.series;
-
+    this.xAxis = option.xAxis;
+    
     myChart.setOption(option);
   }
 
