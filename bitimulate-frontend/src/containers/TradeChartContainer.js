@@ -8,13 +8,17 @@ import { TradeChart } from 'components';
 class TradeChartContainer extends Component {
 
   loadChartData = () => {
-    const { TradeActions, currencyKey } = this.props;
+    const { TradeActions, currencyKey, chartType } = this.props;
     
     TradeActions.getChartData({
       name: `BTC_${currencyKey}`,
-      // type: 'month' // defaultValue, for now
-      type: 'year'
-    });
+      type: chartType // defaultValue, for now
+    })
+  }
+
+  handleSelectChartType = (type) => {
+    const { TradeActions } = this.props;
+    TradeActions.setChartType(type);
   }
 
   componentDidMount() {
@@ -22,16 +26,23 @@ class TradeChartContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.currencyKey !== this.props.currencyKey) {
+    if(prevProps.currencyKey !== this.props.currencyKey
+      || prevProps.chartType !== this.props.chartType
+    ) {
       this.loadChartData();
     }
   }
   
   
   render() {
-    const { chartData, loading } = this.props;
+    const { chartData, chartType, loading } = this.props;
+    const { handleSelectChartType } = this;
     return (
-      <TradeChart data={chartData} loading={loading}></TradeChart>
+      <TradeChart 
+        data={chartData} 
+        loading={loading} 
+        chartType={chartType}
+        onSelectChartType={handleSelectChartType}/>
     )
   }
 }
@@ -39,7 +50,8 @@ class TradeChartContainer extends Component {
 export default connect(
   (state) => ({
     loading: state.pender.pending['trade/GET_CHART_DATA'],
-    chartData: state.trade.getIn(['detail', 'chartData'])
+    chartData: state.trade.getIn(['detail', 'chartData']),
+    chartType: state.trade.getIn(['detail', 'chartType'])
   }),
   (dispatch) => ({
     TradeActions: bindActionCreators(tradeActions, dispatch)
