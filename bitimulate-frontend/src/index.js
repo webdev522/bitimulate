@@ -14,6 +14,7 @@ const socketURI = process.env.NODE_ENV === 'production'
 socket.initialize(store, socketURI)
 // import social from 'lib/social';
 
+window.socket = socket;
 // window.social = social;
 
 // const store = configureStore();
