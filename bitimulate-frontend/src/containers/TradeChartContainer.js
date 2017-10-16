@@ -12,7 +12,8 @@ class TradeChartContainer extends Component {
     
     TradeActions.getChartData({
       name: `BTC_${currencyKey}`,
-      type: 'month' // defaultValue, for now
+      // type: 'month' // defaultValue, for now
+      type: 'year'
     });
   }
 

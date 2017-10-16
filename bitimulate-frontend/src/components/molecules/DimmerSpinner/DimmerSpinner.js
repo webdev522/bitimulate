@@ -2,13 +2,12 @@ import React from 'react';
 import { Dimmer, Spinner } from 'components';
 
 const DimmerSpinner = ({visible}) => {
-  if (!visible) return null;
+
+  if(!visible) return null;
   return (
-    <div>
-      <Dimmer>
-        <Spinner/>
-      </Dimmer>      
-    </div>
+    <Dimmer>
+      <Spinner color="#ffffff"/>
+    </Dimmer>
   );
 };
 
