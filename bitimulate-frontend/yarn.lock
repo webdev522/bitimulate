@@ -2159,6 +2159,10 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
+decode-uri-component@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
+
 deep-equal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
@@ -2737,6 +2741,10 @@ event-emitter@~0.3.5:
 eventemitter3@1.x.x:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-1.2.0.tgz#1c86991d816ad1e504750e73874224ecf3bec508"
+
+eventemitter3@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
 
 events@^1.0.0, events@^1.1.1:
   version "1.1.1"
@@ -5281,6 +5289,10 @@ path-to-regexp@^1.0.1, path-to-regexp@^1.5.3:
   dependencies:
     isarray "0.0.1"
 
+path-to-regexp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-2.0.0.tgz#b77a8168c2e78bc31f3d312d71b1ace97df23870"
+
 path-type@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-1.1.0.tgz#59c44f7ee491da704da415da5a4070ba4f8fe441"
@@ -5797,6 +5809,14 @@ query-string@^4.1.0:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
+query-string@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.0.0.tgz#fbdf7004b4d2aff792f9871981b7a2794f555947"
+  dependencies:
+    decode-uri-component "^0.2.0"
+    object-assign "^4.1.0"
+    strict-uri-encode "^1.0.0"
+
 querystring-es3@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
@@ -6222,9 +6242,13 @@ redux-actions@^2.2.1:
     lodash-es "^4.17.4"
     reduce-reducers "^0.1.0"
 
-redux-pender@^1.0.24:
-  version "1.0.24"
-  resolved "https://registry.yarnpkg.com/redux-pender/-/redux-pender-1.0.24.tgz#8d53ee5b34d22cd95dcfdeeab34e7ce02c174a34"
+redux-pender@^1.1.15:
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/redux-pender/-/redux-pender-1.1.15.tgz#fd6950a0482bd5c4e7c95fe85da074b869967cdd"
+  dependencies:
+    eventemitter3 "^2.0.3"
+    path-to-regexp "^2.0.0"
+    query-string "^5.0.0"
 
 redux@^3.6.0, redux@^3.7.2:
   version "3.7.2"

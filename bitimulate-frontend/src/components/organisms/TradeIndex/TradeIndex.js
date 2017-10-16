@@ -5,7 +5,7 @@ import { RateInfoCard, BitcoinInfoCard } from 'components';
 
 const cx = classNames.bind(styles);
 
-const TradeIndex = ({rate, pinMap, showPinned, onTogglePin}) => {
+const TradeIndex = ({rate, pinMap, showPinned, onTogglePin, krwRate}) => {
   let filtered = showPinned ? (
     rate.filter((info) => pinMap[info.get('currencyKey')])
   ) : rate;
@@ -35,6 +35,7 @@ const TradeIndex = ({rate, pinMap, showPinned, onTogglePin}) => {
           percentage={btcInfo.get('percentChange')}
           last={btcInfo.get('last')}
           info={btcInfo}
+          krwRate={krwRate}
         />
       ) }
       <div className={cx('inner')}>
