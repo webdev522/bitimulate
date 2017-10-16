@@ -24,6 +24,7 @@ const TradeIndex = ({rate, pinMap, showPinned, onTogglePin}) => {
         />
     )
   );
+
   return (
     <div className={cx('trade-index')}>
       <div className={cx('inner')}>

@@ -17,7 +17,7 @@ class Core extends Component {
 }
 
 export default connect(
-   (state) => ({
+  (state) => ({
     
   }),
   (dispatch) => ({

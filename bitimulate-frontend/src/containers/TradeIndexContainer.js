@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { TradeIndex } from 'components';
-
 // import redux dependencies
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {bindActionCreators} from 'redux';
 import * as tradeActions from 'store/modules/trade';
 import * as userActions from 'store/modules/user';
-
 import socket from 'lib/socket';
 
 const sortKey = {
@@ -26,9 +24,26 @@ function generatePinMap(list) {
   return object;
 }
 
+
 class TradeIndexContainer extends Component {
-  initialize = () => {
+  initialize = async () => { 
     const { TradeActions } = this.props;
+    await new Promise((resolve, reject) => {
+      const check = () => {
+        let timeoutId = null;
+        setTimeout(() => {
+          clearTimeout(timeoutId);
+          reject()
+        }, 10000);
+        if (this.props.currencyInfo.isEmpty()) {
+          timeoutId = setTimeout(check, 0);
+          return;
+        }
+        resolve();
+      }
+      check();
+    });
+    
     TradeActions.getInitialRate();
   }
 
@@ -40,6 +55,7 @@ class TradeIndexContainer extends Component {
   componentWillUnmount() {
     socket.unsubscribe('tickers');
   }
+  
 
   savePin = () => {
     const { UserActions, pinned } = this.props;
@@ -49,50 +65,48 @@ class TradeIndexContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if (prevProps.pinned !== this.props.pinned) {
+    // if(prevProps.pinned !== this.props.pinned) {
+    //   // update @ pin
     //   this.savePin();
     // }
   }
-
+  
   handleTogglePin = (key) => {
     const { UserActions } = this.props;
     UserActions.togglePinKey(key);
     setTimeout(() => {
       this.savePin();
-    });
+    }, 0)
   }
 
   render() {
     const { handleTogglePin } = this;
     const { rate, options, pinned } = this.props;
     const { showPinned, sortBy, asc } = options.toJS();
-
-    let processedRate = rate.sortBy(r=>r.get(sortKey[sortBy]));
+    
+    let processedRate = rate.sortBy(r=>r.get(sortKey[sortBy]))
+    
     if (!asc) {
       processedRate = processedRate.reverse();
     }
 
     const pinMap = generatePinMap(pinned);
-
+    
     return (
-      <TradeIndex
-        rate={processedRate}
-        onTogglePin={handleTogglePin}
-        pinMap={pinMap}
-        showPinned={showPinned}
-      />
+      <TradeIndex rate={processedRate} onTogglePin={handleTogglePin} pinMap={pinMap} showPinned={showPinned}/>
     );
   }
 }
 
 export default connect(
-  (state) => ({
-    options: state.trade.getIn(['index', 'options']),
-    rate: state.trade.get('rate'),
-    pinned: state.user.getIn(['metaInfo', 'pinned'])
-  }),
-  (dispatch) => ({
-    TradeActions: bindActionCreators(tradeActions, dispatch),
-    UserActions: bindActionCreators(userActions, dispatch)
-  })
+    (state) => ({
+      options: state.trade.getIn(['index', 'options']),
+      rate: state.trade.get('rate'),
+      pinned: state.user.getIn(['metaInfo', 'pinned']),
+      currencyInfo: state.common.get('currencyInfo')
+    }),
+    (dispatch) => ({
+      TradeActions: bindActionCreators(tradeActions, dispatch),
+      UserActions: bindActionCreators(userActions, dispatch)
+    })
 )(TradeIndexContainer);

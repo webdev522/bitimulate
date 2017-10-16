@@ -67,32 +67,34 @@ class RateInfoCard extends Component {
       onTogglePin, 
       pinned
     } = this.props;
+
     const { highlight, greater } = this.state;
     const { handleOpenCurrency } = this;
 
-    if (!currencyName) return null;
+    if(!currencyName) return null;
+    if(currencyKey === 'BTC') return null;
     
-      const parsedPercentage = Math.round(parseFloat(percentage) * 10000) / 100;
-      const parsedVolume = Math.round(parseFloat(volume) * 100) / 100;
-      const value = last.toFixed(9);
-    
-      return (
-        <div className={cx('wrapper')}>
-          <HoverCard className={cx('rate-info-card', highlight && (greater ? 'green' : 'red'))} onClick={handleOpenCurrency}>
-            <div className={cx('head')}>
-              <div className={cx('short-name')}>{currencyKey}</div>
-              <div className={cx('pin-wrapper', { active: pinned })}><PinIcon onClick={(e) => { e.stopPropagation(); onTogglePin(); }}/></div>
-            </div>
-            <div className={cx('percentage', { positive: parsedPercentage > 0, netural: parsedPercentage === 0 })}>({parsedPercentage.toFixed(2)}%)</div>
-            <div className={cx('value')}>{value}</div>
-            <div className={cx('name')}>{currencyName}</div>
-            <div className={cx('volume')}>
-              <b>Volume </b>
-              <span>{parsedVolume}</span>
-            </div>
-          </HoverCard>
-        </div>
-      );
+    const parsedPercentage = Math.round(parseFloat(percentage) * 10000) / 100;
+    const parsedVolume = Math.round(parseFloat(volume) * 100) / 100;
+    const value = last.toFixed(9);
+  
+    return (
+      <div className={cx('wrapper')}>
+        <HoverCard className={cx('rate-info-card', highlight && (greater ? 'green' : 'red'))} onClick={handleOpenCurrency}>
+          <div className={cx('head')}>
+            <div className={cx('short-name')}>{currencyKey}</div>
+            <div className={cx('pin-wrapper', { active: pinned })}><PinIcon onClick={(e) => { e.stopPropagation(); onTogglePin(); }}/></div>
+          </div>
+          <div className={cx('percentage', { positive: parsedPercentage > 0, netural: parsedPercentage === 0 })}>({parsedPercentage.toFixed(2)}%)</div>
+          <div className={cx('value')}>{value}</div>
+          <div className={cx('name')}>{currencyName}</div>
+          <div className={cx('volume')}>
+            <b>Volume </b>
+            <span>{parsedVolume}</span>
+          </div>
+        </HoverCard>
+      </div>
+    );
 
   }
 }
