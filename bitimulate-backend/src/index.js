@@ -17,6 +17,10 @@ const api = require('./api');
 const jwtMiddleware = require('lib/middlewares/jwt');
 const ws = require('./ws');
 
+// static file
+const path = require('path');
+var serve = require('koa-static');
+
 db.connect();
 
 const app = websockify(new Koa());
@@ -32,9 +36,9 @@ router.use('/api', api.routes());
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.ws.use(ws.routes()).use(ws.allowedMethods());
-// app.use(ctx => {
-//   ctx.body = 'helllo bitimulate';
-// });
+
+// publish static files
+app.use(serve(path.join(__dirname, '../public')));
 
 app.listen(port, () => {
   console.log(`bitimulate server is listening to port ${port}`);

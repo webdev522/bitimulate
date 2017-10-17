@@ -22,7 +22,7 @@ const initialize = async () => {
     await registerInitialExchangeRate();
   }
   // await updateEntireRate();
-  // socket.connect();
+  socket.connect();
 };
 
 async function registerInitialExchangeRate() {

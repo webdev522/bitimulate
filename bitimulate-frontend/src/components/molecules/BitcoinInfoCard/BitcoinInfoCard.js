@@ -70,22 +70,22 @@ class BitcoinInfoCard extends Component {
     if(!currencyName) return null;
     if(currencyKey === 'BTC') return null;
     
-      const parsedPercentage = Math.round(parseFloat(percentage) * 10000) / 100;
-      const value = last.toFixed(2);
-      
-      return (
-        <div className={cx('wrapper')}>
-          <HoverCard className={cx('bitcoin-info-card', highlight && (greater ? 'green' : 'red'))} onClick={handleOpenCurrency}>
-            <div className={cx('bitcoin')}>
-              BTC
-            </div>
-            <div className={cx('percentage', { positive: parsedPercentage > 0, netural: parsedPercentage === 0 })}>({parsedPercentage}%)</div>
-            <div className={cx('value')}>${parseFloat(value).toLocaleString()}</div>
-            { krwRate && <div className={cx('value')}>₩{(value*krwRate).toLocaleString()}</div> }
-            <div className={cx('name')}>Bitcoin</div>
-          </HoverCard>
-        </div>
-      );
+    const parsedPercentage = Math.round(parseFloat(percentage) * 10000) / 100;
+    const value = last.toFixed(2);
+    
+    return (
+      <div className={cx('wrapper')}>
+        <HoverCard className={cx('bitcoin-info-card', highlight && (greater ? 'green' : 'red'))} onClick={handleOpenCurrency}>
+          <div className={cx('bitcoin')}>
+            BTC
+          </div>
+          <div className={cx('percentage', { positive: parsedPercentage > 0, netural: parsedPercentage === 0 })}>({parsedPercentage}%)</div>
+          <div className={cx('value')}>${parseFloat(value).toLocaleString()}</div>
+          { krwRate && <div className={cx('value')}>₩{(value*krwRate).toLocaleString()}</div> }
+          <div className={cx('name')}>Bitcoin</div>
+        </HoverCard>
+      </div>
+    );
 
   }
 }
