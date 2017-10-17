@@ -18,12 +18,16 @@ const jwtMiddleware = require('lib/middlewares/jwt');
 const ws = require('./ws');
 
 // static file
+const cors = require('koa-cors');
 const path = require('path');
 var serve = require('koa-static');
 
 db.connect();
 
 const app = websockify(new Koa());
+
+// set cross origin
+app.use(cors());
 
 app.use(compress());
 
