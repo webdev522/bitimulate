@@ -44,7 +44,7 @@
     "react-dev-utils": "^3.0.2",
     "react-dom": "^16.0.0",
     "react-error-overlay": "^1.0.9",
-    "react-hot-loader": "next",
+    "react-hot-loader": "3.0.0-beta.7",
     "react-icons": "^2.2.5",
     "react-onclickoutside": "^6.4.0",
     "react-redux": "^5.0.5",

@@ -4,26 +4,24 @@ import Root from './Root';
 import 'styles/main.scss';
 import registerServiceWorker from './registerServiceWorker';
 import store from 'store';
-import { AppContainer } from 'react-hot-loader';
+import { AppContainer as HotContainer } from 'react-hot-loader';
+// import social from 'lib/social';
 import socket from 'lib/socket';
 
 const socketURI = process.env.NODE_ENV === 'production'
-                  ? (window.location.protocol === 'https://' ? 'wss://' : 'ws://') + window.location.host + '/ws'
-                  : 'ws://localhost:4000/ws';
+                    ? (window.location.protocol === 'https://' ? 'wss://' : 'ws://') + window.location.host + '/ws'
+                    : 'ws://localhost:4000/ws'
 
-socket.initialize(store, socketURI)
-// import social from 'lib/social';
+console.log(socketURI);
+socket.initialize(store, socketURI);
 
 window.socket = socket;
-// window.social = social;
-
-// const store = configureStore();
 
 const render = (Component) => ReactDOM.render(
   (
-    <AppContainer>
+    <HotContainer>
       <Component store={store}/>
-    </AppContainer>
+    </HotContainer>
   ), 
   document.getElementById('root')
 );
