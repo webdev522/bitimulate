@@ -1,15 +1,19 @@
 const WebSocket = require('ws');
+// const currencyPairs = require('lib/poloniex/currencyPairs');
 
 module.exports = (function() {
   let _client = null;
   let _messageHandler = (message) => { console.warn('messageHandler not defined'); };
-  let _refreshHandler = () => { console.warn('refreshHandler not defined'); };
+  let _refreshHandler = () => { console.warn('refereshHandler not defined'); };
 
   const handlers = {
     open: async () => {
       console.log('connected to server');
       await _refreshHandler();
       _client.send(`{"command": "subscribe", "channel": "1002"}`);
+      // currencyPairs.forEach(pair => {
+      //   _client.send(`{"command": "subscribe", "channel": "${pair}"}`);
+      // });
     },
     message: (message) => {
       _messageHandler(message);
@@ -18,7 +22,7 @@ module.exports = (function() {
   };
 
   const reconnect = () => {
-    console.log('reconnecting...');
+    console.log('reconnecting..');
     setTimeout(connect, 100);
   };
 

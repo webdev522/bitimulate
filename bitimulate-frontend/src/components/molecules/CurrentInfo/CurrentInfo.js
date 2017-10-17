@@ -7,8 +7,16 @@ const cx = classNames.bind(styles);
 
 const CurrentInfo = ({info}) => {
   const { 
-    lastUpdate
+    lastUpdate,
+    last,
+    low24hr,
+    high24hr,
+    highestBid,
+    lowestAsk,
+    baseVolume
   } = info.toJS();
+
+  console.log(info.toJS())
 
   return (
     <div className={cx('current-info')}>
@@ -16,14 +24,23 @@ const CurrentInfo = ({info}) => {
       <LabelBlock label="Update Date">
         {moment(lastUpdate).format('YYYY MMM DD HH:mm')}
       </LabelBlock>
-      <LabelBlock label="price1">
-        value1
+      <LabelBlock label="Volume (24h)">
+        {baseVolume}
       </LabelBlock>
-      <LabelBlock label="price2">
-        value2
+      <LabelBlock label="Last">
+        {last.toFixed(10)}
       </LabelBlock>
-      <LabelBlock label="price3">
-        value3
+      <LabelBlock label="Low (24h)">
+        {low24hr.toFixed(10)}
+      </LabelBlock>
+      <LabelBlock label="High (24h)">
+        {high24hr.toFixed(10)}
+      </LabelBlock>
+      <LabelBlock label="Lowest Ask">
+        {lowestAsk.toFixed(10)}
+      </LabelBlock>
+      <LabelBlock label="Highest Bid">
+        {highestBid.toFixed(10)}
       </LabelBlock>
     </div>
   );

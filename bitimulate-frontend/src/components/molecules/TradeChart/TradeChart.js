@@ -406,7 +406,7 @@ class TradeChart extends Component {
     return (
       <div className={cx('trade-chart-wrapper')}>
         { current && <div className={cx('currency-head')}>
-          <div className={cx('title')}>{current && current.get('name')} 거래</div>
+          <div className={cx('title')}>{current && current.get('name')} Trading</div>
           <div className={cx('desc')}>
             {currencyKey === 'BTC' 
               ? 'BTC/USD'
