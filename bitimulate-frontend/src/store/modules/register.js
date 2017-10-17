@@ -25,7 +25,7 @@ export const setError = createAction(SET_ERROR);
 // initial state
 const initialState = Map({
   nickname: '',
-  currency: 'KRW',
+  currency: 'USD',
   optionIndex: 0,
   displayNameExists: false,
   error: null,

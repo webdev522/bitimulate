@@ -20,7 +20,7 @@ class InitialMoneyOptions extends Component {
 
     const optionList = options.map(
       (option, i) => (
-        <Option key={option} active={i ===optionIndex} onClick={()=>onSelect(i)}>{option}</Option>
+        <Option key={option} active={i === optionIndex} onClick={()=>onSelect(i)}>{option}</Option>
       )
     );
 

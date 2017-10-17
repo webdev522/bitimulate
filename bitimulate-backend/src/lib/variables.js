@@ -1,8 +1,8 @@
 exports.optionsPerCurrency = {
-  'KRW': {
-    symbol: '₩',
-    initialValue: 1000000
-  },
+  // 'KRW': {
+  //   symbol: '₩',
+  //   initialValue: 1000000
+  // },
   'USD': {
     symbol: '$',
     initialValue: 1000
