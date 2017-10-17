@@ -155,7 +155,7 @@ export default handleActions({
         asks: sell 
       } = action.payload.data;
   
-      return state.setIn(['detail', 'orderbook'], Map({
+      return state.setIn(['detail', 'orderBook'], Map({
         buy: fromJS(buy),
         sell: fromJS(sell)
       }))
