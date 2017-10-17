@@ -16,7 +16,15 @@ const CurrentInfo = ({info}) => {
     baseVolume
   } = info.toJS();
 
-  console.log(info.toJS())
+  function limitDigit(value) {
+    const digits = (10 - Math.round(Math.log10(value)));
+    const fixed = value.toFixed(digits > 10 ? 10 : digits);
+    const float = parseFloat(fixed)
+    if(float > 1000) {
+      return float.toLocaleString();
+    }
+    return fixed;
+  }
 
   return (
     <div className={cx('current-info')}>
@@ -25,22 +33,22 @@ const CurrentInfo = ({info}) => {
         {moment(lastUpdate).format('YYYY MMM DD HH:mm')}
       </LabelBlock>
       <LabelBlock label="Volume (24h)">
-        {baseVolume}
+        {limitDigit(baseVolume)}
       </LabelBlock>
       <LabelBlock label="Last">
-        {last.toFixed(10)}
+        {limitDigit(last)}
       </LabelBlock>
       <LabelBlock label="Low (24h)">
-        {low24hr.toFixed(10)}
+        {limitDigit(low24hr)}
       </LabelBlock>
       <LabelBlock label="High (24h)">
-        {high24hr.toFixed(10)}
+        {limitDigit(high24hr)}
       </LabelBlock>
       <LabelBlock label="Lowest Ask">
-        {lowestAsk.toFixed(10)}
+        {limitDigit(lowestAsk)}
       </LabelBlock>
       <LabelBlock label="Highest Bid">
-        {highestBid.toFixed(10)}
+        {limitDigit(highestBid)}
       </LabelBlock>
     </div>
   );
