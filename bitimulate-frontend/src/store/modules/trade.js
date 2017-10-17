@@ -151,7 +151,7 @@ export default handleActions({
     type: GET_ORDER_BOOK,
     onSuccess: (state, action) => {
       const { 
-        bid: buy, 
+        bids: buy, 
         asks: sell 
       } = action.payload.data;
   
