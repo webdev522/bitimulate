@@ -12,9 +12,17 @@ const publisher = redis.createClient();
 
 const initialize = async () => {
   await db.connect();
-  // await registerInitialExchangeRate();
+
+  const {
+    DBINITIAL: initial
+  } = process.env;
+
+  // console.log((initial));
+  if (initial === 'true') {
+    await registerInitialExchangeRate();
+  }
   // await updateEntireRate();
-  socket.connect();
+  // socket.connect();
 };
 
 async function registerInitialExchangeRate() {
