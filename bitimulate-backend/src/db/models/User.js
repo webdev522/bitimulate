@@ -49,6 +49,13 @@ const User = new Schema({
       // KRW: 0,
       USD: 0
     }
+  },
+  walletOnOrder: {
+    type: Wallet,
+    default: {
+      BTC: 0,
+      USD: 0
+    }
   }
 });
 

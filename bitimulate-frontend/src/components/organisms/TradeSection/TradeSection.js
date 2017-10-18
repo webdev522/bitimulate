@@ -27,7 +27,7 @@ const TradeSection = ({
     to: wallet.get(currencyType) || 0
   };
 
-  console.log(has);
+  // console.log(has);
 
 
   return (
