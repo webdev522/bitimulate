@@ -15,6 +15,6 @@ api.use('/chart-data', chartData.routes());
 api.use('/common', common.routes());
 api.use('/exchange', exchange.routes());
 api.use('/user', user.routes());
-api.use('/order', orders.routes());
+api.use('/orders', orders.routes());
 
 module.exports = api;

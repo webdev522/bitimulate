@@ -14,7 +14,9 @@ const TradeBox = ({
     amount,
     sell,
     onChange,
-    onRefreshPrice}) => {
+    onRefreshPrice,
+    onCreateOrder,
+    disabled}) => {
   const actionText = sell ? 'Sell' : 'Buy';
   const secondaryCurrency = currencyType === 'BTC' ? 'USD' : 'BTC';
 
@@ -76,8 +78,8 @@ const TradeBox = ({
         </div>
       </div>
       <div className={cx('content', 'bright', 'bottom')}>
-        <Button flat color="teal" flex>{actionText}</Button>
-       </div>
+        <Button flat color="teal" flex onClick={onCreateOrder} disabled={disabled}>{actionText}</Button>
+      </div>
     </Card>
   );
 };
