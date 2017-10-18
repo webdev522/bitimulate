@@ -41,7 +41,7 @@ class TradeChartContainer extends Component {
     try {
       console.log(currencyKey);
       await TradeActions.regularUpdate({
-        name: currencyKey ? 'USDT_BTC' : `BTC_${currencyKey}`,
+        name: currencyKey === 'BTC' ? 'USDT_BTC' : `BTC_${currencyKey}`,
         type: chartType,
         timebase
       });
