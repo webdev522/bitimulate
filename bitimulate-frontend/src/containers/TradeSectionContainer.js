@@ -11,13 +11,31 @@ class TradeSectionContainer extends Component {
     TradeActions.initializeTradeAction(currentPrice);
   }
 
+  handleChangeInput = (type, name, value) => {
+    const { TradeActions } = this.props;
+    TradeActions.changeTradeBoxInput({
+      type,
+      name,
+      value
+    });
+  }
+
+  handleRefreshPrice = (type) => {
+    const { TradeActions, currentPrice } = this.props;
+    TradeActions.changeTradeBoxInput({
+      type,
+      name: 'price',
+      value: currentPrice
+    });
+  }
+
   componentDidMount() {
     this.initialize();
   }
 
   componentDidUpdate(prevProps, prevState) {
     console.log(prevProps);
-    if (prevProps.currencyType !== this.props.currencyType || (!prevProps.currentPrice && this.props.currentPrice)) {
+    if(prevProps.currencyType !== this.props.currencyType || (!prevProps.currentPrice && this.props.currentPrice)) {
       this.initialize();
     }
   }
@@ -25,15 +43,20 @@ class TradeSectionContainer extends Component {
   
 
   render() {
-    const { currencyType, selectedRate, buy, sell } = this.props;
+    const { currencyType, selectedRate, buy, sell, wallet } = this.props;
+    const { handleChangeInput, handleRefreshPrice } = this;
 
 
     return (
-    <TradeSection 
-      currencyType={currencyType} 
-      selectedRate={selectedRate}
-      buy={buy}
-      sell={sell}/>
+      <TradeSection 
+        currencyType={currencyType} 
+        selectedRate={selectedRate}
+        buy={buy}
+        sell={sell}
+        onChangeInput={handleChangeInput}
+        onRefreshPrice={handleRefreshPrice}
+        wallet={wallet}
+      />
     )
   }
 }
@@ -48,6 +71,7 @@ export default connect(
       currentPrice: current && current.get('last'),
       buy: state.trade.getIn(['detail', 'tradeSection', 'buy']),
       sell: state.trade.getIn(['detail', 'tradeSection', 'sell']),
+      wallet: state.user.get('wallet')
     }
   },
   (dispatch) => ({

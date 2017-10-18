@@ -14,7 +14,7 @@ const Wallet = new Schema({
   BTC: Schema.Types.Double,
   USD: Schema.Types.Double
   // KRW: Schema.Types.Double
-}, { _id: false });
+}, { _id: false, strict: false });
 
 const User = new Schema({
   displayName: String,

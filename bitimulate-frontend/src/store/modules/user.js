@@ -5,21 +5,27 @@ import * as AuthAPI from 'lib/api/auth';
 import * as UserAPI from 'lib/api/user';
 import { pender } from 'redux-pender';
 
+
 // action types
 const SET_USER = 'user/SET_USER';
 const CHECK_LOGIN_STATUS = 'user/CHECK_LOGIN_STATUS';
 const LOGOUT = 'user/LOGOUT';
 const GET_META_INFO = 'user/GET_META_INFO';
-const TOGGLE_PIN_KEY = 'user/TOGGLE_PIN_KEY';
 const PATCH_META_INFO = 'user/PATCH_META_INFO';
+const TOGGLE_PIN_KEY = 'user/TOGGLE_PIN_KEY';
+const GET_WALLET = 'user/GET_WALLET';
+
+
 
 // action creator
 export const setUser = createAction(SET_USER);
 export const checkLoginStatus = createAction(CHECK_LOGIN_STATUS, AuthAPI.checkLoginStatus);
 export const logout = createAction(LOGOUT, AuthAPI.logout);
-export const getMetaInfo =createAction(GET_META_INFO, UserAPI.getMetaInfo);
+export const getMetaInfo = createAction(GET_META_INFO, UserAPI.getMetaInfo);
 export const togglePinKey = createAction(TOGGLE_PIN_KEY);
 export const patchMetaInfo = createAction(PATCH_META_INFO, UserAPI.patchMetaInfo);
+export const getWallet = createAction(GET_WALLET, UserAPI.getWallet);
+
 
 // initial state
 const initialState = Map({
@@ -27,6 +33,9 @@ const initialState = Map({
   user: null, // Map({ _id, displayName })
   metaInfo: Map({
     pinned: List([])
+  }),
+  wallet: Map({
+
   })
 });
 
@@ -35,19 +44,19 @@ export default handleActions({
     [SET_USER]: (state, action) => {
       const { payload: user } = action;
       return state.set('user', Map(user))
-                  .set('logged', true)
+                  .set('logged', true);
     },
     ...pender({
-      type: CHECK_LOGIN_STATUS,
-      onSuccess: (state, action) => {
-        const { user } = action.payload.data;
-        return state.set('user', Map(user))
-                    .set('processed', true);
-      },
-      onFailure: (state, action) => {
-        return state.set('user', null)
-                    .set('processed', true);
-      }
+        type: CHECK_LOGIN_STATUS,
+        onSuccess: (state, action) => {
+          const { user } = action.payload.data;
+          return state.set('user', Map(user))
+                      .set('processed', true);
+        },
+        onFailure: (state, action) => {
+          return state.set('user', null)
+                      .set('processed', true);
+        }
     }),
     ...pender({
       type: GET_META_INFO,
@@ -69,5 +78,12 @@ export default handleActions({
 
       // found
       return state.deleteIn(['metaInfo', 'pinned', index]);
-    }
+    },
+    ...pender({
+      type: GET_WALLET,
+      onSuccess: (state, action) => {
+        const { data: wallet } = action.payload;
+        return state.set('wallet', fromJS(wallet));
+      }
+    })
 }, initialState);

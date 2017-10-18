@@ -18,13 +18,24 @@ class UserLoader extends Component {
     try {
       await UserActions.checkLoginStatus();
       await UserActions.getMetaInfo();
+      await UserActions.getWallet();
+
       if (!user || (user && user._id !== this.props.user.get('_id'))) {
         storage.set('__BTM_USER__', this.props.user.toJS());
       }
     } catch (e) {
       storage.remove('__BTM_USER__');
+      return;
     }
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    // recheck login status when userId changes
+    if(!prevProps.user && this.props.user) {
+      this.checkLoginStatus();
+    }
+  }
+
   componentDidMount() {
     this.checkLoginStatus();
   }
