@@ -24,7 +24,7 @@ const TradeBox = ({
     onChange({
       target: {
         name: 'amount',
-        value: parseFloat(hasAmount) / parseFloat(price)
+        value: sell ? hasAmount : parseFloat(hasAmount) / parseFloat(price)
       }
     });
   }
@@ -69,7 +69,6 @@ const TradeBox = ({
       </div>
       <div className={cx('content', 'bottom')}>
         <div className={cx('text')}>Total {actionText} Price</div>
-        <div className={cx('total')}>100 <span className={cx('base')}>{secondaryCurrency}</span></div>
         <div className={cx('total')}>
           {
             limitDigit(parseFloat(price) * parseFloat(amount))

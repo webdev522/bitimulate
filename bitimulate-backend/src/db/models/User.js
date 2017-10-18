@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-require('mongoose-double')(mongoose);
 const { Schema } = mongoose;
 const crypto = require('crypto');
 const token = require('lib/token');
@@ -12,8 +11,8 @@ function hash(password) {
 
 const Wallet = new Schema({
   BTC: Schema.Types.Double,
-  USD: Schema.Types.Double
-  // KRW: Schema.Types.Double
+  USD: Schema.Types.Double,
+  ETH: Schema.Types.Double
 }, { _id: false, strict: false });
 
 const User = new Schema({
@@ -30,12 +29,11 @@ const User = new Schema({
     }
   },
   password: String,
-  createAt: {
+  createdAt: {
     type: Date,
     default: Date.now
   },
   metaInfo: {
-    // activated: { type: Boolean, default: false }
     initial: {
       currency: String,
       value: Schema.Types.Double
@@ -43,15 +41,14 @@ const User = new Schema({
     pinned: [String]
   },
   wallet: {
-    type: Wallet,
+    type: Schema.Types.Mixed,
     default: {
       BTC: 0,
-      // KRW: 0,
       USD: 0
     }
   },
   walletOnOrder: {
-    type: Wallet,
+    type: Schema.Types.Mixed,
     default: {
       BTC: 0,
       USD: 0
@@ -73,7 +70,7 @@ User.statics.findExistancy = function({email, displayName}) {
       {email},
       {displayName}
     ]
-  });
+  }).exec();
 };
 
 User.statics.findSocialId = function({provider, id}) {
@@ -86,7 +83,7 @@ User.statics.findSocialId = function({provider, id}) {
 
 User.statics.localRegister = function({ displayName, email, password, initial }) {
   const user = new this({
-    displayName,
+    displayName, 
     email,
     password: hash(password),
     metaInfo: {
@@ -97,6 +94,7 @@ User.statics.localRegister = function({ displayName, email, password, initial })
   // sets initial money
   const { currency, value } = initial;
   user.wallet[currency] = value;
+
   return user.save();
 };
 
@@ -123,6 +121,7 @@ User.statics.socialRegister = function({
   });
 
   const { currency, value } = initial;
+  
   user.wallet[currency] = value;
 
   return user.save();
