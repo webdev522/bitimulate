@@ -5,6 +5,7 @@ import {limitDigit} from 'lib/utils';
 import moment from 'moment';
 import scuize from 'lib/hoc/scuize';
 import ReactTooltip from 'react-tooltip';
+import { Spinner } from 'components';
 
 const cx = classNames.bind(styles);
 
@@ -52,7 +53,7 @@ const OptimizedRow = scuize(function (nextProps, nextState) {
 
 
 // // date | type | price | amount
-const TradeHistoryTable = ({data, personal, onCancelOrder, onScroll}) => {
+const TradeHistoryTable = ({data, personal, onCancelOrder, onScroll, hasNext}) => {
 
   const tooltip = personal ? {
     'data-tip': "Double click to cancel your order",
@@ -95,6 +96,11 @@ const TradeHistoryTable = ({data, personal, onCancelOrder, onScroll}) => {
       </div>
       <div className={cx('rows')} {...tooltip} onScroll={onScroll}>
         {rows}
+        { hasNext && (
+          <div className={cx('scroll-block')}>
+            <Spinner size="5rem"/>
+          </div>
+        )}
       </div>
       <ReactTooltip />
     </div>
