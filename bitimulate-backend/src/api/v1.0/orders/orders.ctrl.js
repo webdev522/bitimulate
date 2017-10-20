@@ -25,9 +25,10 @@ exports.getOrders = async (ctx) => {
       currencyPair
     });
 
-    const nextUrl = `${protocol}://${host}${path}?${urlQuery}`;
+    // const nextUrl = `${protocol}://${host}${path}?${urlQuery}`;
+    const nextUrl = `${path}?${urlQuery}`;
     
-    if (orders.length > 0) {
+    if (orders.length === 20) {
       ctx.response.set('Link', `<${nextUrl}>; rel="next"`);
     }
 

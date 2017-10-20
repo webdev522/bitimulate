@@ -9,20 +9,26 @@ import ReactTooltip from 'react-tooltip';
 const cx = classNames.bind(styles);
 
 const statusMap = {
-  'processed': 'Processed',
+  'processed': 'Done',
   'waiting': 'Waiting',
   'cancelled': 'Cancelled'
 }
 
-const Row = ({date, type, rate, amount, personal, status}) => {
+const Row = ({date, type, rate, amount, personal, status, onCancelOrder, id}) => {
   const d = new Date(date);
   const calculatedGMT = new Date(d.valueOf() - d.getTimezoneOffset() * 60000)
   return (
-    <div className={cx('row', 'flicker', { personal })}>
+    <div className={cx('row', 'flicker', { personal })} onDoubleClick={
+      () => {
+        if(!onCancelOrder) return;
+        if(status !== 'waiting') return;
+        onCancelOrder(id);
+      }
+    }>
       <div className={cx('col', 'time')}>
         {moment(personal ? date : calculatedGMT).format('HH:mm')}
       </div>
-      <div className={cx('col', 'type')}>
+      <div className={cx('col', 'type', type)}>
         {type === 'sell' ? 'Sell' : 'Buy'}
       </div>
       <div className={cx('col')}>
@@ -31,9 +37,7 @@ const Row = ({date, type, rate, amount, personal, status}) => {
       <div className={cx('col')}>
         {limitDigit(amount)}
       </div>
-      { personal && <div className={cx('col', 'status', {
-        processed: status === 'processed'
-      })}>
+      { personal && <div className={cx('col', 'status', status)}>
           {statusMap[status]}
         </div>}
     </div>
@@ -48,10 +52,10 @@ const OptimizedRow = scuize(function (nextProps, nextState) {
 
 
 // // date | type | price | amount
-const TradeHistoryTable = ({data, personal}) => {
+const TradeHistoryTable = ({data, personal, onCancelOrder, onScroll}) => {
 
   const tooltip = personal ? {
-    'data-tip': "Double click to cancel",
+    'data-tip': "Double click to cancel your order",
     'data-effect': 'solid'
   } : {} 
 
@@ -63,7 +67,7 @@ const TradeHistoryTable = ({data, personal}) => {
         const { 
           _id, price, amount, status, sell
         } = row.toJS();
-        return <OptimizedRow personal key={_id} rate={price} amount={amount} type={sell ? 'sell' : 'buy'} status={status}/>
+        return <OptimizedRow personal key={_id} id={_id} rate={price} amount={amount} type={sell ? 'sell' : 'buy'} status={status} onCancelOrder={onCancelOrder}/>
       }
     }
   )
@@ -89,7 +93,7 @@ const TradeHistoryTable = ({data, personal}) => {
           Status
         </div>}
       </div>
-      <div className={cx('rows')} {...tooltip}>
+      <div className={cx('rows')} {...tooltip} onScroll={onScroll}>
         {rows}
       </div>
       <ReactTooltip />
