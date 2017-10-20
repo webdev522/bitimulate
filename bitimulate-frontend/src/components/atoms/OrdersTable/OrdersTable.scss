@@ -1,5 +1,17 @@
 @import 'utils';
+
+@keyframes flicker {
+  50% {
+    background: rgba(0, 208, 255, 0.15);
+  }
+}
+
 .orders-table {
+  .flicker {
+    animation-duration: .5s;
+    animation-fill-mode: both;
+    animation-name: flicker;
+  }
   .title {
     font-weight: 600;
     color: material-color('grey', '800');
@@ -17,8 +29,8 @@
   .row {
     display: flex;
     padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
     min-height: 1.4375rem;
+    padding-bottom: 0.25rem;
     .value {
       font-size: 0.85rem;
       flex: 1;
