@@ -62,7 +62,7 @@ module.exports = (() => {
       } else {
         return User.findByIdAndUpdate(userId, {
           $inc: {
-            [`wallet.${target}`]: amount * (1 - 0.0015),
+            [`wallet.${base}`]: totalPrice * (1 - 0.0015),
             [`walletOnOrder.${target}`]: amount * -1
           }
         }).exec();
@@ -105,17 +105,17 @@ module.exports = (() => {
   const processOrder = async (order) => {
     const { _id, amount, userId, price, currencyPair, sell } = order;
     try {
-      await Order.findByIdAndUpdate(_id, { 
+      const updatedOrder = await Order.findByIdAndUpdate(_id, { 
         status: 'processed',
         processedDate: new Date(),
         $inc: {
           processedAmount: amount
         }
-      }).exec();
+      }, { new: true }).lean().exec();
       await makeUserTransaction(userId, currencyPair, amount, price, sell);
       generalPublisher.publish('general', JSON.stringify({
         type: 'ORDER_PROCESSED',
-        payload: order
+        payload: updatedOrder
       }));
     } catch (e) {
       console.log(e);

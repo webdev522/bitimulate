@@ -3,10 +3,11 @@ import LZUTF8 from 'lzutf8';
 import { bindActionCreators } from 'redux';
 import { updateTicker, updateLastCandle } from 'store/modules/trade';
 import * as userActions from 'store/modules/user';
+import * as tradeActions from 'store/modules/trade';
 import store from 'store';
 
 const UserActions = bindActionCreators(userActions, store.dispatch);
-
+const TradeActions = bindActionCreators(tradeActions, store.dispatch);
 
 const parseJSON = (str) => {
   let parsed = null;
@@ -63,9 +64,9 @@ export default (function() {
       },
       [ORDER_PROCESSED]: () => {
         // refresh wallet
-        console.log(payload);
+        
         UserActions.getWallet();
-
+        TradeActions.orderProcessed(payload);
       }
     }
     
@@ -77,7 +78,7 @@ export default (function() {
     try {
       // const decompressed = await decompress(message.data);
       const data = parseJSON(message.data);
-      if (!data || !data.type) return;
+      if(!data || !data.type) return;
 
       handlePacket(data);
     } catch (e) {
@@ -102,11 +103,11 @@ export default (function() {
   }
 
   const subscribe = (key) => {
-    if (_subscribed.indexOf(key) === -1) {
+    if(_subscribed.indexOf(key) === -1) {
       _subscribed.push(key);
     }
 
-    if (_socket.readyState !== _socket.OPEN) return;
+    if(_socket.readyState !== _socket.OPEN) return;
 
     console.log('subscribing to ' + key);
     _socket.send(JSON.stringify({
@@ -117,7 +118,7 @@ export default (function() {
 
   const unsubscribe = (key) => {
     const index = _subscribed.indexOf(key);
-    if (index === -1) return;
+    if(index === -1) return;
 
     _subscribed.splice(index, 1);
     console.log('unscribing ' + key);
@@ -135,7 +136,7 @@ export default (function() {
 
   const reconnect = () => {
     console.log('reconnecting to socket...');
-    if (_retry) {
+    if(_retry) {
       // retry after 3 sec
       setTimeout(() => connect(_uri), 3000);
       return;
