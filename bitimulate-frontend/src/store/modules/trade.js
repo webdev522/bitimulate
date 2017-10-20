@@ -47,7 +47,7 @@ export const updateLastCandle = createAction(UPDATE_LAST_CANDLE);
 export const regularUpdate = createAction(REGULAR_UPDATE, ChartDataAPI.getChartData);
 export const getOrderBook = createAction(GET_ORDER_BOOK, PoloniexAPI.getOrderBook, meta => meta);
 export const resetOrderBook = createAction(RESET_ORDER_BOOK);
-export const getTradeHistory = createAction(GET_TRADE_HISTORY, PoloniexAPI.getTradeHistory);
+export const getTradeHistory = createAction(GET_TRADE_HISTORY, PoloniexAPI.getTradeHistory, meta => meta);
 export const resetTradeHistory = createAction(RESET_TRADE_HISTORY);
 export const initializeTradeAction = createAction(INITIALIZE_TRADE_SECTION);
 export const changeTradeBoxInput = createAction(CHANGE_TRADE_BOX_INPUT);
@@ -161,23 +161,23 @@ export default handleActions({
       const { payload: value } = action;
 
       let chartData = state.getIn(['detail', 'chartData']);
-      if (chartData.isEmpty()) return state;
+      if(chartData.isEmpty()) return state;
 
       let lastCandle = chartData.get(chartData.size - 1);
       const { high, low, close } = lastCandle.toJS();
 
       // lower
-      if (value > high) {
+      if(value > high) {
         lastCandle = lastCandle.set('high', value);
       }
 
       // higher
-      if (value < low) {
+      if(value < low) {
         lastCandle = lastCandle.set('low', value);
       }
 
       // same
-      if (value === close) return state;
+      if(value === close) return state;
       lastCandle = lastCandle.set('close', value);
 
       chartData = chartData.set(chartData.size - 1, lastCandle);
@@ -190,7 +190,7 @@ export default handleActions({
         const { meta } = action;
 
         // resolves flickering orderbook
-        if (meta.indexOf(state.getIn(['detail', 'currencyType'])) === -1) {
+        if(meta.indexOf(state.getIn(['detail', 'currencyType'])) === -1) {
           return state;
         }
 
@@ -211,8 +211,16 @@ export default handleActions({
     ...pender({
       type: GET_TRADE_HISTORY,
       onSuccess: (state, action) => {
+        const { meta } = action;
         const { data: tradeHistory } = action.payload;
-        return state.setIn(['detail', 'tradeHistory'], fromJS(tradeHistory));
+        
+        if(!meta.start) {
+        // if there is no meta.start, it means... replace the whole data  
+          return state.setIn(['detail', 'tradeHistory'], fromJS(tradeHistory));
+        }
+        
+        const currentTradeHistory = state.getIn(['detail', 'tradeHistory']);
+        return state.setIn(['detail', 'tradeHistory'], fromJS(tradeHistory).concat(currentTradeHistory));
       }
     }),
     [RESET_TRADE_HISTORY]: (state, action) => {
