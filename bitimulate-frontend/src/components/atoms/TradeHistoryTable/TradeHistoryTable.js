@@ -75,7 +75,7 @@ const TradeHistoryTable = ({data, personal, onCancelOrder, onScroll, hasNext}) =
   return (
     <div className={cx('trade-history-table')}>
       <div className={cx('title')}>
-        Trade List
+        Trade History
       </div>
       <div className={cx('head')}>
         <div className={cx('col', 'time')}>

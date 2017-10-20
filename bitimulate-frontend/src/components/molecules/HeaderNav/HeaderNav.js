@@ -12,11 +12,11 @@ const HeaderNav = () => {
       <NavItem to="/trade">
         Trade
       </NavItem>
-      <NavItem>
-        Dashboard
+      <NavItem to="/wallet">
+        My Wallet
       </NavItem>
       <NavItem>
-        Community
+        Ranking
       </NavItem>
     </FlexBox>
   );
