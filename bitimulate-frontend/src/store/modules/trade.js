@@ -10,6 +10,7 @@ import * as ChartDataAPI from 'lib/api/chartData';
 import * as PoloniexAPI from 'lib/api/poloniex';
 import * as OrdersAPI from 'lib/api/orders';
 
+
 // action types
 const GET_INITIAL_RATE = 'trade/GET_INITIAL_RATE';
 const SET_INDEX_OPTION = 'trade/SET_INDEX_OPTION';
@@ -24,6 +25,9 @@ const REGULAR_UPDATE = 'trade/REGULAR_UPDATE';
 
 const GET_ORDER_BOOK = 'trade/GET_ORDER_BOOK';
 const RESET_ORDER_BOOK = 'trade/RESET_ORDER_BOOK';
+
+const GET_TRADE_HISTORY = 'trade/GET_TRADE_HISTORY';
+const RESET_TRADE_HISTORY = 'trade/RESET_TRADE_HISTORY';
 
 const INITIALIZE_TRADE_SECTION = 'trade/INITIALIZE_TRADE_SECTION';
 const CHANGE_TRADE_BOX_INPUT = 'trade/CHANGE_TRADE_BOX_INPUT';
@@ -43,9 +47,12 @@ export const updateLastCandle = createAction(UPDATE_LAST_CANDLE);
 export const regularUpdate = createAction(REGULAR_UPDATE, ChartDataAPI.getChartData);
 export const getOrderBook = createAction(GET_ORDER_BOOK, PoloniexAPI.getOrderBook, meta => meta);
 export const resetOrderBook = createAction(RESET_ORDER_BOOK);
+export const getTradeHistory = createAction(GET_TRADE_HISTORY, PoloniexAPI.getTradeHistory);
+export const resetTradeHistory = createAction(RESET_TRADE_HISTORY);
 export const initializeTradeAction = createAction(INITIALIZE_TRADE_SECTION);
 export const changeTradeBoxInput = createAction(CHANGE_TRADE_BOX_INPUT);
 export const createOrder = createAction(CREATE_ORDER, OrdersAPI.createOrder, meta => meta);
+
 
 // initial state
 const initialState = Map({
@@ -66,6 +73,7 @@ const initialState = Map({
       buy: List(),
       sell: List()
     }),
+    tradeHistory: List(),
     tradeSection: Map({
       buy: Map({
         price: 0,
@@ -153,23 +161,23 @@ export default handleActions({
       const { payload: value } = action;
 
       let chartData = state.getIn(['detail', 'chartData']);
-      if(chartData.isEmpty()) return state;
+      if (chartData.isEmpty()) return state;
 
       let lastCandle = chartData.get(chartData.size - 1);
       const { high, low, close } = lastCandle.toJS();
 
       // lower
-      if(value > high) {
+      if (value > high) {
         lastCandle = lastCandle.set('high', value);
       }
 
       // higher
-      if(value < low) {
+      if (value < low) {
         lastCandle = lastCandle.set('low', value);
       }
 
       // same
-      if(value === close) return state;
+      if (value === close) return state;
       lastCandle = lastCandle.set('close', value);
 
       chartData = chartData.set(chartData.size - 1, lastCandle);
@@ -182,7 +190,7 @@ export default handleActions({
         const { meta } = action;
 
         // resolves flickering orderbook
-        if(meta.indexOf(state.getIn(['detail', 'currencyType'])) === -1) {
+        if (meta.indexOf(state.getIn(['detail', 'currencyType'])) === -1) {
           return state;
         }
 
@@ -200,7 +208,16 @@ export default handleActions({
     [RESET_ORDER_BOOK]: (state, action) => {
       return state.setIn(['detail', 'orderBook'], initialState.getIn(['detail', 'orderBook']));
     },
-
+    ...pender({
+      type: GET_TRADE_HISTORY,
+      onSuccess: (state, action) => {
+        const { data: tradeHistory } = action.payload;
+        return state.setIn(['detail', 'tradeHistory'], fromJS(tradeHistory));
+      }
+    }),
+    [RESET_TRADE_HISTORY]: (state, action) => {
+      return state.setIn(['detail', 'tradeHistory'], List());
+    },
     [INITIALIZE_TRADE_SECTION]: (state, action) => {
       const { payload: initialPrice  = 0} = action;
 
