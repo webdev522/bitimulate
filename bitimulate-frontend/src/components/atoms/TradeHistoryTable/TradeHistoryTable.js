@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import styles from './PublicTradeHistory.scss';
+import styles from './TradeHistoryTable.scss';
 import classNames from 'classnames/bind';
 import {limitDigit} from 'lib/utils';
 import moment from 'moment';
 import scuize from 'lib/hoc/scuize';
+import ReactTooltip from 'react-tooltip';
 
 const cx = classNames.bind(styles);
 
-const Row = ({date, type, rate, amount}) => {
+
+const Row = ({date, type, rate, amount, personal, processed}) => {
   return (
-    <div className={cx('row', 'flicker')}>
+    <div className={cx('row', 'flicker', { personal })}>
       <div className={cx('col', 'time')}>
         {moment(date).format('HH:mm')}
       </div>
@@ -22,6 +24,11 @@ const Row = ({date, type, rate, amount}) => {
       <div className={cx('col')}>
         {limitDigit(amount)}
       </div>
+      { personal && <div className={cx('col', 'status', {
+        processed
+      })}>
+          Status
+        </div>}
     </div>
   )
 }
@@ -30,13 +37,22 @@ const OptimizedRow = scuize(function (nextProps, nextState) {
   return false;
 })(Row);
 
+
+
+
 // // date | type | price | amount
-const PublicTradeHistory = ({data}) => {
+const TradeHistoryTable = ({data, personal}) => {
+
+  const tooltip = personal ? {
+    'data-tip': "Double click to cancel",
+    'data-effect': 'solid'
+  } : {} 
+
   const rows = data && data.map(
-    row => <OptimizedRow id={row.get('tradeID')} key={row.get('tradeID')} {...row.toJS()}/>
+    row => <OptimizedRow id={row.get('tradeID')} key={row.get('tradeID')} {...row.toJS()} personal={personal}/>
   )
   return (
-    <div className={cx('public-trade-history')}>
+    <div className={cx('trade-history-table')}>
       <div className={cx('title')}>
         Trade List
       </div>
@@ -53,13 +69,16 @@ const PublicTradeHistory = ({data}) => {
         <div className={cx('col')}>
           Amount
         </div>
+        { personal && <div className={cx('col', 'status')}>
+          Status
+        </div>}
       </div>
-      <div className={cx('rows')}>
+      <div className={cx('rows')} {...tooltip}>
         {rows}
       </div>
-
+      <ReactTooltip />
     </div>
   );
 };
 
-export default PublicTradeHistory;
+export default TradeHistoryTable;
