@@ -168,19 +168,19 @@ exports.cancelOrder = async (ctx) => {
   const { user } = ctx.request;
 
   const { id } = ctx.params;
-  if(!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     ctx.status = 400; // Bad Request
     return;
   }
 
   try {
     const order = await Order.findById(id).lean().exec(); 
-    if(!order) {
+    if (!order) {
       ctx.status = 404; // Not Found
       return;
     }
 
-    if(order.status !== 'waiting') {
+    if (order.status !== 'waiting') {
       ctx.status = 400;
       ctx.body = {
         message: 'not cancellable'
@@ -192,13 +192,13 @@ exports.cancelOrder = async (ctx) => {
     const totalAmount = price * amount;
 
     const baseCurrency = (() => {
-      if(currencyPair === 'USDT_BTC') {
+      if (currencyPair === 'USDT_BTC') {
         return sell ? 'BTC' : 'USD';
       }
       return sell ? currencyPair.split('_')[1] : 'BTC';
     })();
 
-    if(order.sell) {
+    if (order.sell) {
       await User.findByIdAndUpdate(user._id, {
         $inc: {
           [`wallet.${baseCurrency}`]: amount,

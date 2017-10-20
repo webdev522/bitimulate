@@ -68,11 +68,11 @@ class TradeHistoryContainer extends Component {
   }
 
   componentDidMount() {
-      const { currencyType } = this.props;
-      if(currencyType) {
-        this.getPublicHistory();
-        this.getPrivateHistory();
-      }
+    const { currencyType } = this.props;
+    if(currencyType) {
+      this.getPublicHistory();
+      this.getPrivateHistory();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
