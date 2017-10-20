@@ -10,7 +10,8 @@ const cx = classNames.bind(styles);
 
 const statusMap = {
   'processed': 'Processed',
-  'waiting': 'Waiting'
+  'waiting': 'Waiting',
+  'cancelled': 'Cancelled'
 }
 
 const Row = ({date, type, rate, amount, personal, status}) => {
