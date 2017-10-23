@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './WalletSubpage.scss';
 import classNames from 'classnames/bind';
-import { TripleWallet, WalletTable } from 'components';
-import { TripleWalletContainer } from 'containers';
+import { Wallets } from 'components';
+import { WalletsContainer } from 'containers';
 
 const cx = classNames.bind(styles);
 
@@ -12,16 +12,7 @@ const WalletSubpage = () => {
       <h1>
         My Wallet
       </h1>
-      <section>
-        <h2>
-          My Current Total BTCs
-        </h2>
-        <TripleWalletContainer/>
-      </section>
-      <section>
-        <h2>Wallet By Currencies</h2>
-        <WalletTable/>
-      </section>
+      <WalletsContainer/>
     </section>
   );
 };
