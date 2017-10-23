@@ -9,22 +9,26 @@ export function getCurrency(key) {
 }
 
 export function scrollTo(elementY, duration=1000) { 
+  var startingY = window.pageYOffset  
+  var diff = elementY - startingY  
+  var start;
+  
 
-  if (!window.requestAnimationFrame || duration === 0) {
+  if(!window.requestAnimationFrame || duration === 0) {
       return window.scrollTo(0, elementY);
   }
 }
 
 export function waitUntil(fn, timeout) {
   return new Promise((resolve, reject) => {
-    if (timeout) {
+    if(timeout) {
       setTimeout(() => {
         reject();
       }, timeout);
     }
 
     const check = () => {
-      if (fn()) {
+      if(fn()) {
         resolve();
         return;
       }
@@ -35,14 +39,28 @@ export function waitUntil(fn, timeout) {
   })
 }
 
-export function limitDigit(value, d = 10) {
+
+export function limitDigit(value, d = 10, showComma) {
   const parsedValue = typeof value === 'string' ? parseFloat(value) : value;
 
-  const digits = (d - Math.round(Math.log10(parsedValue)));
+  const digits = (d - Math.floor(Math.log10(parsedValue)));
   const fixed = parsedValue.toFixed(digits > d ? d : digits);
-  const float = parseFloat(fixed)
+  const float = parseFloat(fixed);
+  if(!showComma) {
+    return fixed;
+  }
+
   if(float > 1000) {
     return float.toLocaleString();
   }
   return fixed;
+}
+
+export function compare(current, next, names) {
+  for(let name of names) {
+    if(current[name] !== next[name]) {
+      return true;
+    }
+  }
+  return false;
 }

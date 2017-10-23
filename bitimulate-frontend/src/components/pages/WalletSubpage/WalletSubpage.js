@@ -14,7 +14,7 @@ const WalletSubpage = () => {
       </h1>
       <section>
         <h2>
-          My Current BTCs
+          My Current Total BTCs
         </h2>
         <TripleWalletContainer/>
       </section>
