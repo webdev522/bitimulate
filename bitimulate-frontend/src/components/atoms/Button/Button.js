@@ -18,10 +18,11 @@ const Button = ({
   disabled,
   dark,
   onClick,
+  theme,
   ...rest
 }) => {
   const dynamicStyle = {
-    ...(xPadding? {
+    ...(xPadding ? {
       paddingLeft: xPadding,
       paddingRight: xPadding
     } : {})
@@ -34,7 +35,7 @@ const Button = ({
         flat,
         disabled,
         dark,
-      }, color, className)
+      }, color, className, theme)
     }
     style={{
       padding,
@@ -42,7 +43,7 @@ const Button = ({
       ...dynamicStyle
     }}
     onClick={disabled ? undefined : onClick}
-    {...rest}>
+     {...rest}>
       {children}
     </div>
   );

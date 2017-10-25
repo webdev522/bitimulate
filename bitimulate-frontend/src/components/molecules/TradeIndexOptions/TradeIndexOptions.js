@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './TradeIndexOptions.scss';
 import classNames from 'classnames/bind';
-import { Selector, SortReverser, Option } from 'components';
+import { Selector, SortReverser, Option, Button } from 'components';
 // import PinIcon from 'react-icons/lib/ti/pin';
 
 const cx = classNames.bind(styles);
@@ -31,6 +31,7 @@ const TradeIndexOptions = ({
   asc,
   onToggleAsc,
   onSelectSort,
+  onAutoPin,
   onToggleShowPinned
 }) => {
   return (
@@ -41,6 +42,9 @@ const TradeIndexOptions = ({
           <Option onClick={onToggleShowPinned} active={showPinned}>
             <div className={cx('option-info')}>Show Pinned</div>
           </Option>
+        </div>
+        <div className={cx('auto-pin')}>
+          <Button flat onClick={onAutoPin} theme="outline">My BTCs</Button>  
         </div>
         <div className={cx('selector')}>
           <Selector options={sorterOptions} value={sortBy} onSelect={onSelectSort}/>
