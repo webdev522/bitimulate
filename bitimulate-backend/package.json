@@ -24,6 +24,7 @@
     "mongoose": "^4.11.10",
     "mongoose-double": "^0.0.1",
     "nodemon": "^1.11.0",
+    "npm-run-all": "^4.1.1",
     "query-string": "^5.0.0",
     "redis": "^2.8.0",
     "shortid": "^2.2.8",
@@ -40,6 +41,7 @@
   "scripts": {
     "start:dev": "NODE_PATH=src nodemon --watch src/ src/index.js",
     "crawler:dev": "NODE_PATH=src nodemon --watch src/crawler/ src/crawler/index.js --ignore src/crawler/*.json",
-    "trader:dev": "NODE_PATH=src nodemon --inspect --watch src/trader/ src/trader/index.js"
+    "trader:dev": "NODE_PATH=src nodemon --inspect --watch src/trader/ src/trader/index.js",
+    "dev": "npm-run-all --parallel crawler:dev trader:dev start:dev"
   }
 }

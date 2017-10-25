@@ -71,7 +71,8 @@
     "build": "NODE_PATH=src node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "storybook": "NODE_PATH=src start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy": "cp -R ./build/* ../bitimulate-backend/public/"
   },
   "jest": {
     "collectCoverageFrom": [
