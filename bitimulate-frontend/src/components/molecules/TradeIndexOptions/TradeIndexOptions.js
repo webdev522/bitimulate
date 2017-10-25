@@ -44,7 +44,7 @@ const TradeIndexOptions = ({
           </Option>
         </div>
         <div className={cx('auto-pin')}>
-          <Button flat onClick={onAutoPin} theme="outline">My BTCs</Button>  
+          <Button flat onClick={onAutoPin} theme="outline">Set My BTCs Pinned</Button>  
         </div>
         <div className={cx('selector')}>
           <Selector options={sorterOptions} value={sortBy} onSelect={onSelectSort}/>
