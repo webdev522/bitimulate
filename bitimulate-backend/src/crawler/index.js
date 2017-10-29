@@ -100,7 +100,7 @@ const messageHandler = {
         payload
       }));
 
-      log('Updated', name);
+      // log('Updated', name);
       // console.log('[Update]', name, new Date());
     } catch (e) {
       console.error(e);

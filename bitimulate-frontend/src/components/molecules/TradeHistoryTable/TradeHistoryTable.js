@@ -53,7 +53,7 @@ const OptimizedRow = scuize(function (nextProps, nextState) {
 
 
 // // date | type | price | amount
-const TradeHistoryTable = ({data, personal, onCancelOrder, onScroll, hasNext}) => {
+const TradeHistoryTable = ({data, personal, onCancelOrder, onScroll, hasNext, forPage}) => {
 
   const tooltip = personal ? {
     'data-tip': "Double click to cancel your order",
@@ -73,10 +73,10 @@ const TradeHistoryTable = ({data, personal, onCancelOrder, onScroll, hasNext}) =
     }
   )
   return (
-    <div className={cx('trade-history-table')}>
-      <div className={cx('title')}>
+    <div className={cx('trade-history-table', {forPage})}>
+      { !forPage && <div className={cx('title')}>
         Trade History
-      </div>
+      </div>}
       <div className={cx('head')}>
         <div className={cx('col', 'time')}>
           Time
