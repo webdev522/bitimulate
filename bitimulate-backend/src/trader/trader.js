@@ -13,6 +13,7 @@ module.exports = (() => {
   const makeUserTransaction = async (userId, currencyPair, amount, price, sell) => {
     let [ base, target ] = currencyPair.split('_');
 
+    console.log({userId, currencyPair, amount, price, sell});
     console.log(base, target);
 
     // mock USDT to USD
@@ -35,12 +36,12 @@ module.exports = (() => {
 
     try {
       const user = await User.findById(userId).exec();
-      if (!user) {
+      if(!user) {
         log.error(`${userId} does not exist.`);
         return;
       }
 
-      if (!sell && user.wallet[target] === undefined) {
+      if(!sell && user.wallet[target] === undefined) {
         // if wallet target is undefined, directly set the target value
         return User.findByIdAndUpdate(userId, {
           $set: {
@@ -52,7 +53,7 @@ module.exports = (() => {
         }).exec();
       }
       
-      if (!sell) {
+      if(!sell) {
         return User.findByIdAndUpdate(userId, {
           $inc: {
             [`wallet.${target}`]: amount * (1 - 0.0015),
@@ -112,7 +113,9 @@ module.exports = (() => {
           processedAmount: amount
         }
       }, { new: true }).lean().exec();
+      require('mongoose').set('debug', true);
       await makeUserTransaction(userId, currencyPair, amount, price, sell);
+      require('mongoose').set('debug', false);
       generalPublisher.publish('general', JSON.stringify({
         type: 'ORDER_PROCESSED',
         payload: updatedOrder
@@ -132,7 +135,7 @@ module.exports = (() => {
     const buyOrders = await Promise.all(findBuyOrders);
 
     buyOrders.forEach(orders => {
-      if (orders.length > 0) {
+      if(orders.length > 0) {
         availableOrders = availableOrders.concat(orders);
       }
     });
@@ -144,7 +147,7 @@ module.exports = (() => {
     const sellOrders = await Promise.all(findSellOrders);
 
     sellOrders.forEach(orders => {
-      if (orders.length > 0) {
+      if(orders.length > 0) {
         availableOrders = availableOrders.concat(orders);
       }
     });
