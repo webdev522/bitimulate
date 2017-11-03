@@ -90,7 +90,7 @@ exports.localRegister = async (ctx) => {
       // metaInfo: user.metaInfo
     };
 
-    const accessToken = await await user.generateToken();
+    const accessToken = await user.generateToken();
 
     // configure accesstoken to httpOnly cookie
     ctx.cookies.set('access_token', accessToken, {
