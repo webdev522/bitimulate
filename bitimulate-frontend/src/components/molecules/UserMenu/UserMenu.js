@@ -74,7 +74,7 @@ class UserMenu extends Component {
     return (
       <div className={cx('user-menu')}>
         <Card className={cx('card', effect)} noPadding>
-          <div onClick={onLogout} className={cx('menu-item')}>로그아웃</div>
+          <div onClick={onLogout} className={cx('menu-item')}>Logout</div>
         </Card>
       </div>
     )
