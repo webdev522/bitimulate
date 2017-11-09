@@ -113,9 +113,9 @@ module.exports = (() => {
           processedAmount: amount
         }
       }, { new: true }).lean().exec();
-      require('mongoose').set('debug', true);
+      // require('mongoose').set('debug', true);
       await makeUserTransaction(userId, currencyPair, amount, price, sell);
-      require('mongoose').set('debug', false);
+      // require('mongoose').set('debug', false);
       generalPublisher.publish('general', JSON.stringify({
         type: 'ORDER_PROCESSED',
         payload: updatedOrder
