@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Header.scss';
 import classNames from 'classnames/bind';
-import { Logo, HeaderNav, Button, UserButton } from 'components';
+import { Logo, HeaderNav, Button, UserButton, UserMenu } from 'components';
 
 const cx = classNames.bind(styles);
 
@@ -25,13 +25,13 @@ const Header = ({
               <Button 
                 invert 
                 className={cx('login-button')}
-                onClick={onLoginButtonClick}
-              >
+                onClick={onLoginButtonClick}>
                 Login
               </Button>
             )
           }
         </div>
+        <UserMenu/>
       </div>
     </div>
   );
