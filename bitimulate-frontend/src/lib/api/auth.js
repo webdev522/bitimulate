@@ -12,29 +12,22 @@ export const localRegister = ({
   email,
   password,
   initialMoney: { currency, index }
-});
+})
 export const localLogin = ({email, password}) => axios.post('/api/v1.0/auth/login/local', {
   email, password
 });
-export const socialLogin = ({provider, accessToken}) => axios.post('/api/v1.0/auth/login/' +  provider, {
+export const socialLogin = ({provider, accessToken}) => axios.post('/api/v1.0/auth/login/' + provider, {
   accessToken
 });
 export const socialRegister = ({
   displayName,
   provider,
   accessToken,
-  initialMoney: {
-    currency, index
-  }
+  initialMoney: { currency, index } 
 }) => axios.post('/api/v1.0/auth/register/' + provider, {
   displayName,
   accessToken,
-  initialMoney: {
-    currency, index
-  }
+  initialMoney: { currency, index }
 });
-export const checkLoginStatus =() => axios.get('/api/v1.0/auth/check');
+export const checkLoginStatus = () => axios.get('/api/v1.0/auth/check');
 export const logout = () => axios.post('/api/v1.0/auth/logout');
-
-// temporarry logout caller
-window.logout = logout;
