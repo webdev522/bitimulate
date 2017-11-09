@@ -14,12 +14,12 @@ function getAllExchangeRate() {
 }
 
 function getPrice(rates, name) {
-  if(name === 'USD') {
+  if (name === 'USD') {
     const btcRate = rates.find(rate => rate.name === 'USDT_BTC');
     return 1 / btcRate.last;
   }
 
-  if(name === 'BTC') {
+  if (name === 'BTC') {
     return 1;
   }
 
@@ -32,7 +32,7 @@ function getPrice(rates, name) {
 
 function combineWallet(wallet, walletOnOrder) {
   const combined = {};
-  for(let currency in wallet) {
+  for (let currency in wallet) {
     combined[currency] = wallet[currency] + (walletOnOrder[currency] || 0);
   }
   return combined;
@@ -40,17 +40,17 @@ function combineWallet(wallet, walletOnOrder) {
 
 function convertToBTC(wallet, rates) {
   let btc = 0;
-  for(let currency in wallet) {
+  for (let currency in wallet) {
     const btcPrice = getPrice(rates, currency);
     btc += wallet[currency] * btcPrice;
   }
   return btc;
 }
 
-function getInitialBTCAmount(initial, usdRate) {
-  const { currency, value } = initial;
-  if(currency === 'BTC') return value.value;
-  return value.value * usdRate;
+function getInitialUSDAmount(initial) {
+  const { currency, value, usdRate } = initial;
+  if (currency === 'USD') return value.value;
+  return value.value / usdRate;
 }
 
 async function processWallets() {
@@ -64,18 +64,16 @@ async function processWallets() {
 
     const bar = new progress.Bar({}, progress.Presets.shades_classic);
     bar.start(length - 1, 0);
-    for(let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       const users = await User.find().skip(i * batchSize).limit(batchSize).exec();
       users.forEach(user => {
         const combined = combineWallet(user.wallet, user.walletOnOrder);
         const btc = convertToBTC(combined, rates);
         const { initial } = user.metaInfo;
-        const initialBTC = getInitialBTCAmount(initial, usdRate);
-        console.log('--------------');
-        console.log(initialBTC, btc);
-        console.log((btc - initialBTC) / initialBTC);
-        
-        user.saveBalance(btc);
+        const initialUSD = getInitialUSDAmount(initial);
+        const currentUSD = btc / usdRate;
+        const earnings = (currentUSD - initialUSD) / initialUSD;
+        user.saveEarnings(earnings);
       });
       // users.forEach(user => {
       //   user.balanceHistory = [];
