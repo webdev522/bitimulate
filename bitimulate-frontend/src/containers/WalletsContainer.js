@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'lodash/fp/compose';
 
-window.compose = compose;
+// -window.compose = compose;
 
 class WalletsContainer extends Component {
 
