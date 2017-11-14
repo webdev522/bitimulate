@@ -32,8 +32,8 @@ const app = websockify(new Koa());
 
 app.use((ctx, next) => {
   const allowedHosts = [
-    'localhost',
-    '192.169.198.141'
+    'localhost:4000',
+    '192.169.198.141:4000'
   ];
   const origin = ctx.header['origin'];
   allowedHosts.every(el => {
