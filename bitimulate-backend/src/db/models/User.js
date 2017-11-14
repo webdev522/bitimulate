@@ -72,7 +72,8 @@ const User = new Schema({
   },
   earningsRatio: {
     type: Schema.Types.Double,
-    default: 0
+    default: 0,
+    index: true
   }
 });
 
@@ -202,6 +203,9 @@ User.methods.saveEarnings = function(ratio) {
   }).exec();
 };
 
+User.statics.getTopRanking = function() {
+  return this.find({}, { _id: false, displayName: true, earningsRatio: true }).sort({ earningsRatio: -1 }).limit(100).exec();
+};
 // User.methods.saveEarnings = function(balance) {
 //   if(!this.balanceHistory) {
 //     return this.model('User').findByIdAndUpdate(this._id, {
