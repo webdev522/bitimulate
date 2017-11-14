@@ -7,6 +7,9 @@ const cx = classNames.bind(styles);
 const ProfitChart = () => (
   <div>
     <h2>Profit Chart</h2>
+    <div className={cx('not-available')}>
+      It will be coming soon.
+    </div>
   </div>
 );
 
