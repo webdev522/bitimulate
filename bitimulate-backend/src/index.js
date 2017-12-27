@@ -63,7 +63,7 @@ app.ws.use(ws.routes()).use(ws.allowedMethods());
 
 app.use(koaStatic(frontendBuild));
 app.use((ctx) => {
-  ctx.body = indexPage;
+  ctx.body = indexPage.toString();
 });
 
 app.listen(port, () => {
