@@ -3,8 +3,10 @@ import hello from 'hellojs';
 hello.init({
     // facebook: 1456738254380084,
     // google: '139700894213-90pmhsv3jrjaoln83f353fmjvspdibb9.apps.googleusercontent.com'
-    facebook: 166763637236028,
-    google: '897961256976-7njm046grtv679oa2gknpkfd3g2qfrki.apps.googleusercontent.com'
+    // facebook: 166763637236028,
+    // google: '897961256976-7njm046grtv679oa2gknpkfd3g2qfrki.apps.googleusercontent.com'
+    facebook: 121400741991057,
+    google: '897961256976-mc80slccn1qi20jrgsj28mm0mvt24bva.apps.googleusercontent.com'
 }, {redirect_uri: '/redirect.html'});
 
 export default(function () {
