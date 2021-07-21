@@ -4,6 +4,7 @@
 ## About
 
 Bitimulate is compound word of **Bit**coin and S**imulate**. This service provides a simulated cryptocurrency trading system. Data used in this service rely on realtime information at [Poloniex](https://poloniex.com).
+![Screen Shot 2017-10-31 at 1 46 12 PM](https://user-images.githubusercontent.com/25504715/126433040-acabc28a-eb44-47e8-af42-729902e13a9a.png)
 
 
 ## Stack
